@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Alphabets & Pronunciation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Simple Fixed Header */
+        .header {
+            background: linear-gradient(135deg, #8b4513, #d4af37);
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.05);
+        }
+
+        .back-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Guruvammal Logo for Back Button */
+        .back-btn .guruvammal-logo {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            box-sizing: border-box;
+            
+            /* Typography */
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1;
+            color: #5d3a0a;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            
+            /* Golden Square Background - Solid golden theme */
+            background: linear-gradient(135deg, #d4af37 0%, #8b4513 50%, #cd853f 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 6px;
+            padding: 8px;
+            
+            /* Visual Effects - Matching Master Logo */
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3), 0 0 40px rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn .guruvammal-logo .tamil-corner {
+            position: absolute;
+            top: 1px;
+            right: 2px;
+            font-size: 8px;
+            color: #5d3a0a;
+            font-weight: 900;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .back-btn:hover .guruvammal-logo {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.4), 0 0 50px rgba(212, 175, 55, 0.3);
+        }
+
+        .back-btn .back-text {
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .header h1 {
+            flex: 1;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .menu-toggle {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            min-width: 40px;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Simple Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transform: translateX(-280px);
+            transition: transform 0.3s ease;
+            z-index: 90;
+            overflow-y: auto;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            background: linear-gradient(135deg, #8b4513, #d4af37);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Removed sidebar-menu styles since we only use expandable sections now */
+
+        /* Expandable Section Styles */
+        .nav-section {
+            border-bottom: 1px solid #eee;
+        }
+
+        .nav-section-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .nav-section-header:hover {
+            background: linear-gradient(135deg, #8b4513, #d4af37);
+            color: white;
+        }
+
+        .nav-section-icon {
+            margin-right: 0.5rem;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+            width: 12px;
+            text-align: center;
+        }
+
+        .nav-section-icon.expanded {
+            transform: rotate(90deg);
+        }
+
+        .nav-section-content {
+            background: #f9f9f9;
+            border-top: 1px solid #eee;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .nav-section-content.expanded {
+            max-height: 200px;
+            opacity: 1;
+        }
+
+        .nav-sub-item {
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #555;
+            border-bottom: 1px solid #e9e9e9;
+        }
+
+        .nav-sub-item:hover {
+            background: linear-gradient(135deg, #8b4513, #d4af37);
+            color: white;
+        }
+
+        .nav-sub-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Main Content - Simple & Responsive */
+        .main-content {
+            margin-top: 70px;
+            padding: 2rem 1rem;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.shifted {
+            margin-left: 280px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #8b4513;
+            font-size: 2rem;
+        }
+
+        /* Alphabet Cards - Simple Grid */
+        .alphabet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .letter-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .letter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .letter {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #8b4513;
+            margin-bottom: 0.5rem;
+        }
+
+        .pronunciation {
+            font-size: 1.2rem;
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+        }
+
+        .example {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        /* Audio Buttons */
+        .audio-controls {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .audio-btn {
+            background: linear-gradient(135deg, #8b4513, #d4af37);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .audio-btn:hover {
+            background: linear-gradient(135deg, #a0522d, #f4d03f);
+            transform: translateY(-1px);
+        }
+
+        .audio-btn:active {
+            transform: translateY(0);
+        }
+
+        .audio-btn.playing {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Global Audio Controls */
+        .global-audio-controls {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .global-audio-controls h3 {
+            margin-bottom: 1rem;
+            color: #8b4513;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .main-content.shifted {
+                margin-left: 0;
+            }
+            
+            .header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .alphabet-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .letter {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Overlay for mobile */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 80;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <!-- Simple Fixed Header -->
+    <div class="header">
+        <button class="back-btn" onclick="goBack()">
+            <div class="guruvammal-logo">
+                Ga<span class="tamil-corner">அ</span>
+            </div>
+            <span class="back-text">Back</span>
+        </button>
+        <h1>French Alphabets & Pronunciation</h1>
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    </div>
+
+    <!-- Simple Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            French Learning
+        </div>
+        <!-- Alphabets & Accents Expandable Section -->
+        <div class="nav-section">
+            <div class="nav-section-header" onclick="toggleAlphabetsSection()">
+                <span class="nav-section-icon" id="alphabetsIcon">▶</span>
+                📝 Alphabets & Accents
+            </div>
+            <div class="nav-section-content" id="alphabetsContent">
+                <div class="nav-sub-item" onclick="scrollToSection('alphabet-section')">
+                    🔤 Basic Alphabets
+                </div>
+                <div class="nav-sub-item" onclick="scrollToSection('accents-section')">
+                    ✨ French Accents
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <h2 class="page-title">French Alphabet & Pronunciation</h2>
+        
+        <!-- Global Audio Controls -->
+        <div class="global-audio-controls">
+            <h3>🔊 Audio Controls</h3>
+            <div class="audio-controls">
+                <button class="audio-btn" onclick="playEntireAlphabet()">
+                    🔤 Play A-Z
+                </button>
+                <button class="audio-btn" onclick="playAllWords()">
+                    📚 Play All Words
+                </button>
+                <button class="audio-btn" onclick="stopAllAudio()">
+                    ⏹️ Stop Audio
+                </button>
+            </div>
+        </div>
+        
+        <!-- Basic Alphabets Section -->
+        <div id="alphabet-section">
+            <div class="alphabet-grid">
+            <div class="letter-card">
+                <div class="letter">A</div>
+                <div class="pronunciation">[a]</div>
+                <div class="example">Arbre (tree)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('A', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Arbre', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">B</div>
+                <div class="pronunciation">[be]</div>
+                <div class="example">Beau (beautiful)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('B', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Beau', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">C</div>
+                <div class="pronunciation">[se]</div>
+                <div class="example">Chat (cat)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('C', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Chat', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">D</div>
+                <div class="pronunciation">[de]</div>
+                <div class="example">Deux (two)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('D', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Deux', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">E</div>
+                <div class="pronunciation">[ə]</div>
+                <div class="example">École (school)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('E', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('École', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">F</div>
+                <div class="pronunciation">[ɛf]</div>
+                <div class="example">Famille (family)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('F', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Famille', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">G</div>
+                <div class="pronunciation">[ʒe]</div>
+                <div class="example">Grande (big)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('G', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Grande', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">H</div>
+                <div class="pronunciation">[aʃ]</div>
+                <div class="example">Heureux (happy)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('H', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Heureux', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">I</div>
+                <div class="pronunciation">[i]</div>
+                <div class="example">Île (island)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('I', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Île', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">J</div>
+                <div class="pronunciation">[ʒi]</div>
+                <div class="example">Jardin (garden)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('J', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Jardin', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">K</div>
+                <div class="pronunciation">[ka]</div>
+                <div class="example">Kilo (kilogram)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('K', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Kilo', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">L</div>
+                <div class="pronunciation">[ɛl]</div>
+                <div class="example">Livre (book)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('L', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Livre', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">M</div>
+                <div class="pronunciation">[ɛm]</div>
+                <div class="example">Maison (house)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('M', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Maison', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">N</div>
+                <div class="pronunciation">[ɛn]</div>
+                <div class="example">Nouveau (new)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('N', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Nouveau', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">O</div>
+                <div class="pronunciation">[o]</div>
+                <div class="example">Orange (orange)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('O', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Orange', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">P</div>
+                <div class="pronunciation">[pe]</div>
+                <div class="example">Petit (small)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('P', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Petit', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">Q</div>
+                <div class="pronunciation">[ky]</div>
+                <div class="example">Quatre (four)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('Q', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Quatre', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">R</div>
+                <div class="pronunciation">[ɛʁ]</div>
+                <div class="example">Rouge (red)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('R', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Rouge', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">S</div>
+                <div class="pronunciation">[ɛs]</div>
+                <div class="example">Soleil (sun)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('S', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Soleil', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">T</div>
+                <div class="pronunciation">[te]</div>
+                <div class="example">Table (table)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('T', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Table', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">U</div>
+                <div class="pronunciation">[y]</div>
+                <div class="example">Une (one/a)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('U', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Une', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">V</div>
+                <div class="pronunciation">[ve]</div>
+                <div class="example">Voiture (car)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('V', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Voiture', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">W</div>
+                <div class="pronunciation">[dublə ve]</div>
+                <div class="example">Weekend</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('W', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Weekend', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">X</div>
+                <div class="pronunciation">[iks]</div>
+                <div class="example">Exemple (example)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('X', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Exemple', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">Y</div>
+                <div class="pronunciation">[i gʁɛk]</div>
+                <div class="example">Yaourt (yogurt)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('Y', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Yaourt', this)">🔊 Word</button>
+                </div>
+            </div>
+            <div class="letter-card">
+                <div class="letter">Z</div>
+                <div class="pronunciation">[zɛd]</div>
+                <div class="example">Zéro (zero)</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playFrenchAudio('Z', this)">🔊 Letter</button>
+                    <button class="audio-btn" onclick="playFrenchAudio('Zéro', this)">🔊 Word</button>
+                </div>
+            </div>
+        </div>
+        </div> <!-- End Basic Alphabets Section -->
+
+        <!-- French Accents Section -->
+        <div id="accents-section" style="margin-top: 3rem;">
+            <h2 class="page-title">✨ French Accents & Special Characters</h2>
+            
+            <div class="accents-intro" style="background: rgba(255,255,255,0.8); padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <p style="text-align: center; font-size: 1.1rem; color: #555; margin: 0;">
+                    French uses several accent marks that change pronunciation and meaning. Master these essential accents!
+                </p>
+            </div>
+
+            <!-- Accents Audio Controls -->
+            <div class="global-audio-controls">
+                <h3>🔊 Accents Audio</h3>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playAllAccents()">
+                        ✨ Play All Accents
+                    </button>
+                    <button class="audio-btn" onclick="playAccentExamples()">
+                        📝 Play Examples
+                    </button>
+                    <button class="audio-btn" onclick="stopAllAudio()">
+                        ⏹️ Stop Audio
+                    </button>
+                </div>
+            </div>
+
+            <div class="alphabet-grid">
+                <!-- Acute Accent (é) -->
+                <div class="letter-card">
+                    <div class="letter">é</div>
+                    <div class="pronunciation">[e]</div>
+                    <div class="example">Café (coffee)</div>
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="playFrenchAudio('é', this)">🔊 Accent</button>
+                        <button class="audio-btn" onclick="playFrenchAudio('Café', this)">🔊 Word</button>
+                    </div>
+                </div>
+
+                <!-- Grave Accent (è) -->
+                <div class="letter-card">
+                    <div class="letter">è</div>
+                    <div class="pronunciation">[ɛ]</div>
+                    <div class="example">Père (father)</div>
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="playFrenchAudio('è', this)">🔊 Accent</button>
+                        <button class="audio-btn" onclick="playFrenchAudio('Père', this)">🔊 Word</button>
+                    </div>
+                </div>
+
+                <!-- Circumflex (ê) -->
+                <div class="letter-card">
+                    <div class="letter">ê</div>
+                    <div class="pronunciation">[ɛ]</div>
+                    <div class="example">Être (to be)</div>
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="playFrenchAudio('ê', this)">🔊 Accent</button>
+                        <button class="audio-btn" onclick="playFrenchAudio('Être', this)">🔊 Word</button>
+                    </div>
+                </div>
+
+                <!-- Diaeresis (ë) -->
+                <div class="letter-card">
+                    <div class="letter">ë</div>
+                    <div class="pronunciation">[ɛ]</div>
+                    <div class="example">Noël (Christmas)</div>
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="playFrenchAudio('ë', this)">🔊 Accent</button>
+                        <button class="audio-btn" onclick="playFrenchAudio('Noël', this)">🔊 Word</button>
+                    </div>
+                </div>
+
+                <!-- Cedilla (ç) -->
+                <div class="letter-card">
+                    <div class="letter">ç</div>
+                    <div class="pronunciation">[s]</div>
+                    <div class="example">Français (French)</div>
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="playFrenchAudio('ç', this)">🔊 Accent</button>
+                        <button class="audio-btn" onclick="playFrenchAudio('Français', this)">🔊 Word</button>
+                    </div>
+                </div>
+
+                <!-- A grave (à) -->
+                <div class="letter-card">
+                    <div class="letter">à</div>
+                    <div class="pronunciation">[a]</div>
+                    <div class="example">À bientôt (see you soon)</div>
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="playFrenchAudio('à', this)">🔊 Accent</button>
+                        <button class="audio-btn" onclick="playFrenchAudio('À bientôt', this)">🔊 Phrase</button>
+                    </div>
+                </div>
+
+                <!-- U grave (ù) -->
+                <div class="letter-card">
+                    <div class="letter">ù</div>
+                    <div class="pronunciation">[u]</div>
+                    <div class="example">Où (where)</div>
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="playFrenchAudio('ù', this)">🔊 Accent</button>
+                        <button class="audio-btn" onclick="playFrenchAudio('Où', this)">🔊 Word</button>
+                    </div>
+                </div>
+
+                <!-- I circumflex (î) -->
+                <div class="letter-card">
+                    <div class="letter">î</div>
+                    <div class="pronunciation">[i]</div>
+                    <div class="example">Dîner (dinner)</div>
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="playFrenchAudio('î', this)">🔊 Accent</button>
+                        <button class="audio-btn" onclick="playFrenchAudio('Dîner', this)">🔊 Word</button>
+                    </div>
+                </div>
+
+                <!-- O circumflex (ô) -->
+                <div class="letter-card">
+                    <div class="letter">ô</div>
+                    <div class="pronunciation">[o]</div>
+                    <div class="example">Hôtel (hotel)</div>
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="playFrenchAudio('ô', this)">🔊 Accent</button>
+                        <button class="audio-btn" onclick="playFrenchAudio('Hôtel', this)">🔊 Word</button>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End French Accents Section -->
+    </div>
+
+    <script>
+        // Expandable Section Functions
+        function toggleAlphabetsSection() {
+            const content = document.getElementById('alphabetsContent');
+            const icon = document.getElementById('alphabetsIcon');
+            
+            if (content.classList.contains('expanded')) {
+                // Collapse
+                content.classList.remove('expanded');
+                icon.classList.remove('expanded');
+                icon.textContent = '▶';
+            } else {
+                // Expand
+                content.classList.add('expanded');
+                icon.classList.add('expanded');
+                icon.textContent = '▼';
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Close sidebar on mobile after navigation
+                if (window.innerWidth <= 768) {
+                    closeSidebar();
+                }
+                
+                console.log(`📍 Scrolled to section: ${sectionId}`);
+            }
+        }
+
+        // Internet Connection Check and Audio System
+        let currentPlayingButton = null;
+        let isSequencePlaying = false;
+        let hasShownOfflineMessage = false;
+
+        // Check if internet connection is available for audio
+        function checkInternetForAudio() {
+            // Check basic online status
+            if (!navigator.onLine) {
+                showOfflineMessage();
+                return false;
+            }
+
+            // Check if high-quality voices are available (indicates good connection)
+            const voices = speechSynthesis.getVoices();
+            const frenchVoices = voices.filter(voice => 
+                voice.lang.startsWith('fr') && !voice.localService
+            );
+
+            // If no online French voices available, assume poor connection
+            if (frenchVoices.length === 0 && !hasShownOfflineMessage) {
+                showOfflineMessage();
+                return false;
+            }
+
+            return true;
+        }
+
+        function showOfflineMessage() {
+            if (hasShownOfflineMessage) return; // Don't show multiple times
+            
+            hasShownOfflineMessage = true;
+            
+            // Create and show popup message
+            alert('🌐 Connect to internet or better network\n\n' +
+                  'Audio pronunciation requires an internet connection for the best French voice quality.\n\n' +
+                  '📡 Please check your internet connection and try again.');
+            
+            // Reset flag after 10 seconds to allow retry
+            setTimeout(() => {
+                hasShownOfflineMessage = false;
+            }, 10000);
+        }
+
+        // Listen for connection changes
+        window.addEventListener('online', () => {
+            console.log('📡 Connection restored');
+            hasShownOfflineMessage = false;
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('📡 Connection lost');
+            hasShownOfflineMessage = false;
+        });
+
+        // French Audio System - Firebase Compatible using Web Speech API
+
+        function playFrenchAudio(text, buttonElement = null) {
+            console.log('🔊 Playing French audio:', text);
+            
+            // Check internet connection first
+            if (!checkInternetForAudio()) {
+                return; // Don't play audio if no connection
+            }
+            
+            // Stop any current speech
+            speechSynthesis.cancel();
+            
+            // Clear previous playing states
+            clearPlayingStates();
+            
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.7; // Slower for learning
+                utterance.volume = 0.8;
+                utterance.pitch = 1.0;
+                
+                // Try to use French voice
+                const voices = speechSynthesis.getVoices();
+                const frenchVoice = voices.find(voice => 
+                    voice.lang.startsWith('fr') || 
+                    voice.name.toLowerCase().includes('french')
+                );
+                
+                if (frenchVoice) {
+                    utterance.voice = frenchVoice;
+                    console.log('✅ Using French voice:', frenchVoice.name);
+                } else {
+                    console.log('⚠️ No French voice found, using default');
+                }
+                
+                // Add playing state
+                utterance.onstart = () => {
+                    if (buttonElement) {
+                        buttonElement.classList.add('playing');
+                        currentPlayingButton = buttonElement;
+                    }
+                    console.log('🎵 Audio started');
+                };
+                
+                // Remove playing state when finished
+                utterance.onend = () => {
+                    if (buttonElement) {
+                        buttonElement.classList.remove('playing');
+                    }
+                    currentPlayingButton = null;
+                    console.log('✅ Audio finished');
+                };
+                
+                utterance.onerror = (event) => {
+                    console.log('❌ Audio error:', event.error);
+                    if (buttonElement) {
+                        buttonElement.classList.remove('playing');
+                    }
+                    currentPlayingButton = null;
+                };
+                
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('Speech synthesis not supported in this browser');
+            }
+        }
+
+        function clearPlayingStates() {
+            document.querySelectorAll('.audio-btn.playing').forEach(btn => {
+                btn.classList.remove('playing');
+            });
+            currentPlayingButton = null;
+        }
+
+        function playEntireAlphabet() {
+            if (isSequencePlaying) {
+                stopAllAudio();
+                return;
+            }
+
+            // Check internet connection first
+            if (!checkInternetForAudio()) {
+                return; // Don't play if no connection
+            }
+
+            console.log('🔤 Playing entire alphabet A-Z');
+            isSequencePlaying = true;
+            
+            const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 
+                           'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 
+                           'U', 'V', 'W', 'X', 'Y', 'Z'];
+            
+            let index = 0;
+            function playNext() {
+                if (index < letters.length && isSequencePlaying) {
+                    console.log(`Playing letter ${index + 1}/26: ${letters[index]}`);
+                    
+                    // Find the button for this letter
+                    const letterCard = Array.from(document.querySelectorAll('.letter-card')).find(card => 
+                        card.querySelector('.letter').textContent === letters[index]
+                    );
+                    const button = letterCard ? letterCard.querySelector('.audio-btn') : null;
+                    
+                    if ('speechSynthesis' in window) {
+                        const utterance = new SpeechSynthesisUtterance(letters[index]);
+                        utterance.lang = 'fr-FR';
+                        utterance.rate = 0.8;
+                        
+                        const voices = speechSynthesis.getVoices();
+                        const frenchVoice = voices.find(voice => voice.lang.startsWith('fr'));
+                        if (frenchVoice) utterance.voice = frenchVoice;
+                        
+                        utterance.onstart = () => {
+                            if (button) button.classList.add('playing');
+                        };
+                        
+                        utterance.onend = () => {
+                            if (button) button.classList.remove('playing');
+                            index++;
+                            if (index < letters.length && isSequencePlaying) {
+                                setTimeout(playNext, 1000); // 1 second pause between letters
+                            } else {
+                                isSequencePlaying = false;
+                                console.log('🏁 Alphabet sequence complete');
+                            }
+                        };
+                        
+                        utterance.onerror = () => {
+                            if (button) button.classList.remove('playing');
+                            index++;
+                            setTimeout(playNext, 1000);
+                        };
+                        
+                        speechSynthesis.speak(utterance);
+                    }
+                } else {
+                    isSequencePlaying = false;
+                }
+            }
+            playNext();
+        }
+
+        function playAllWords() {
+            if (isSequencePlaying) {
+                stopAllAudio();
+                return;
+            }
+
+            // Check internet connection first
+            if (!checkInternetForAudio()) {
+                return; // Don't play if no connection
+            }
+
+            console.log('📚 Playing all French words');
+            isSequencePlaying = true;
+            
+            const words = ['Arbre', 'Beau', 'Chat', 'Deux', 'École', 'Famille', 'Grande', 'Heureux', 
+                          'Île', 'Jardin', 'Kilo', 'Livre', 'Maison', 'Nouveau', 'Orange', 'Petit', 
+                          'Quatre', 'Rouge', 'Soleil', 'Table', 'Une', 'Voiture', 'Weekend', 'Exemple', 'Yaourt', 'Zéro'];
+            
+            let index = 0;
+            function playNext() {
+                if (index < words.length && isSequencePlaying) {
+                    console.log(`Playing word ${index + 1}/${words.length}: ${words[index]}`);
+                    
+                    // Find the button for this word
+                    const wordCard = Array.from(document.querySelectorAll('.letter-card')).find(card => 
+                        card.querySelector('.example').textContent.includes(words[index])
+                    );
+                    const button = wordCard ? wordCard.querySelectorAll('.audio-btn')[1] : null; // Second button is for word
+                    
+                    if ('speechSynthesis' in window) {
+                        const utterance = new SpeechSynthesisUtterance(words[index]);
+                        utterance.lang = 'fr-FR';
+                        utterance.rate = 0.7;
+                        
+                        const voices = speechSynthesis.getVoices();
+                        const frenchVoice = voices.find(voice => voice.lang.startsWith('fr'));
+                        if (frenchVoice) utterance.voice = frenchVoice;
+                        
+                        utterance.onstart = () => {
+                            if (button) button.classList.add('playing');
+                        };
+                        
+                        utterance.onend = () => {
+                            if (button) button.classList.remove('playing');
+                            index++;
+                            if (index < words.length && isSequencePlaying) {
+                                setTimeout(playNext, 1500); // 1.5 second pause between words
+                            } else {
+                                isSequencePlaying = false;
+                                console.log('🏁 Words sequence complete');
+                            }
+                        };
+                        
+                        utterance.onerror = () => {
+                            if (button) button.classList.remove('playing');
+                            index++;
+                            setTimeout(playNext, 1500);
+                        };
+                        
+                        speechSynthesis.speak(utterance);
+                    }
+                } else {
+                    isSequencePlaying = false;
+                }
+            }
+            playNext();
+        }
+
+        function stopAllAudio() {
+            console.log('🛑 Stopping all audio');
+            
+            if ('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+            }
+            
+            isSequencePlaying = false;
+            clearPlayingStates();
+        }
+
+
+
+        // Accents-specific audio functions
+        function playAllAccents() {
+            if (isSequencePlaying) {
+                stopAllAudio();
+                return;
+            }
+
+            // Check internet connection first
+            if (!checkInternetForAudio()) {
+                return; // Don't play if no connection
+            }
+
+            console.log('✨ Playing all French accents');
+            isSequencePlaying = true;
+            
+            const accents = ['é', 'è', 'ê', 'ë', 'ç', 'à', 'ù', 'î', 'ô'];
+            
+            let index = 0;
+            function playNext() {
+                if (index < accents.length && isSequencePlaying) {
+                    console.log(`Playing accent ${index + 1}/${accents.length}: ${accents[index]}`);
+                    
+                    // Find the button for this accent
+                    const accentCards = document.querySelectorAll('#accents-section .letter-card');
+                    const accentCard = Array.from(accentCards).find(card => 
+                        card.querySelector('.letter').textContent === accents[index]
+                    );
+                    const button = accentCard ? accentCard.querySelector('.audio-btn') : null;
+                    
+                    if ('speechSynthesis' in window) {
+                        const utterance = new SpeechSynthesisUtterance(accents[index]);
+                        utterance.lang = 'fr-FR';
+                        utterance.rate = 0.6; // Slower for accents
+                        
+                        const voices = speechSynthesis.getVoices();
+                        const frenchVoice = voices.find(voice => voice.lang.startsWith('fr'));
+                        if (frenchVoice) utterance.voice = frenchVoice;
+                        
+                        utterance.onstart = () => {
+                            if (button) button.classList.add('playing');
+                        };
+                        
+                        utterance.onend = () => {
+                            if (button) button.classList.remove('playing');
+                            index++;
+                            if (index < accents.length && isSequencePlaying) {
+                                setTimeout(playNext, 1200); // 1.2 second pause between accents
+                            } else {
+                                isSequencePlaying = false;
+                                console.log('🏁 Accents sequence complete');
+                            }
+                        };
+                        
+                        utterance.onerror = () => {
+                            if (button) button.classList.remove('playing');
+                            index++;
+                            setTimeout(playNext, 1200);
+                        };
+                        
+                        speechSynthesis.speak(utterance);
+                    }
+                } else {
+                    isSequencePlaying = false;
+                }
+            }
+            playNext();
+        }
+
+        function playAccentExamples() {
+            if (isSequencePlaying) {
+                stopAllAudio();
+                return;
+            }
+
+            // Check internet connection first
+            if (!checkInternetForAudio()) {
+                return; // Don't play if no connection
+            }
+
+            console.log('📝 Playing accent examples');
+            isSequencePlaying = true;
+            
+            const examples = ['Café', 'Père', 'Être', 'Noël', 'Français', 'À bientôt', 'Où', 'Dîner', 'Hôtel'];
+            
+            let index = 0;
+            function playNext() {
+                if (index < examples.length && isSequencePlaying) {
+                    console.log(`Playing example ${index + 1}/${examples.length}: ${examples[index]}`);
+                    
+                    // Find the button for this example
+                    const accentCards = document.querySelectorAll('#accents-section .letter-card');
+                    const exampleCard = Array.from(accentCards).find(card => 
+                        card.querySelector('.example').textContent.includes(examples[index])
+                    );
+                    const button = exampleCard ? exampleCard.querySelectorAll('.audio-btn')[1] : null; // Second button is for word
+                    
+                    if ('speechSynthesis' in window) {
+                        const utterance = new SpeechSynthesisUtterance(examples[index]);
+                        utterance.lang = 'fr-FR';
+                        utterance.rate = 0.7;
+                        
+                        const voices = speechSynthesis.getVoices();
+                        const frenchVoice = voices.find(voice => voice.lang.startsWith('fr'));
+                        if (frenchVoice) utterance.voice = frenchVoice;
+                        
+                        utterance.onstart = () => {
+                            if (button) button.classList.add('playing');
+                        };
+                        
+                        utterance.onend = () => {
+                            if (button) button.classList.remove('playing');
+                            index++;
+                            if (index < examples.length && isSequencePlaying) {
+                                setTimeout(playNext, 1500); // 1.5 second pause between examples
+                            } else {
+                                isSequencePlaying = false;
+                                console.log('🏁 Accent examples sequence complete');
+                            }
+                        };
+                        
+                        utterance.onerror = () => {
+                            if (button) button.classList.remove('playing');
+                            index++;
+                            setTimeout(playNext, 1500);
+                        };
+                        
+                        speechSynthesis.speak(utterance);
+                    }
+                } else {
+                    isSequencePlaying = false;
+                }
+            }
+            playNext();
+        }
+
+        // Load voices when available
+        speechSynthesis.onvoiceschanged = () => {
+            const voices = speechSynthesis.getVoices();
+            const frenchVoices = voices.filter(voice => voice.lang.startsWith('fr'));
+            console.log(`🎤 Voices loaded: ${voices.length} total, ${frenchVoices.length} French`);
+        };
+
+        // Simple, reliable JavaScript - Firebase compatible
+        console.log('🔄 French Alphabets page loading...');
+
+        // Simple toggle function
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const overlay = document.getElementById('overlay');
+            
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (isOpen) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+
+        function openSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const overlay = document.getElementById('overlay');
+            
+            sidebar.classList.add('open');
+            overlay.classList.add('active');
+            
+            // Only shift content on desktop
+            if (window.innerWidth > 768) {
+                mainContent.classList.add('shifted');
+            }
+            
+            console.log('📱 Sidebar opened');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const overlay = document.getElementById('overlay');
+            
+            sidebar.classList.remove('open');
+            mainContent.classList.remove('shifted');
+            overlay.classList.remove('active');
+            
+            console.log('📱 Sidebar closed');
+        }
+
+        // Back button function - always go to French intro page
+        function goBack() {
+            console.log('🔙 Navigating to French intro page...');
+            
+            // Try to use the universal navigation system from index.html
+            if (window.loadLanguageContent) {
+                window.loadLanguageContent('french', 'intro');
+            } else {
+                // Direct navigation for Firebase-loaded content
+                window.location.hash = '#french-intro';
+                console.log('📍 Set hash to #french-intro for navigation');
+            }
+        }
+
+        // Load different sections (simplified for Alphabets & Accents only)
+        function loadSection(section) {
+            console.log('📖 Loading section:', section);
+            
+            // Close sidebar after selection
+            closeSidebar();
+            
+            // Since this page only contains Alphabets & Accents, redirect to appropriate section
+            if (section === 'alphabets') {
+                scrollToSection('alphabet-section');
+            } else {
+                // For any other section requests, show message that this page is dedicated to alphabets & accents
+                alert('This page is dedicated to French Alphabets & Accents. Use the expandable menu to navigate between Basic Alphabets and French Accents sections.');
+            }
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('mainContent').classList.remove('shifted');
+            }
+        });
+
+        // Initialize page
+        function initializePage() {
+            console.log('✅ French Alphabets page initialized');
+            
+            // Ensure sidebar starts closed
+            closeSidebar();
+            
+            // Add smooth scroll behavior
+            document.documentElement.style.scrollBehavior = 'smooth';
+        }
+
+        // Run initialization
+        document.addEventListener('DOMContentLoaded', initializePage);
+        window.addEventListener('load', initializePage);
+        
+        // Also run immediately for Firebase loading
+        initializePage();
+
+        console.log('🎯 French Alphabets page ready!');
+
+        // Global functions for Firebase compatibility - Essential for dynamic loading
+        window.toggleSidebar = toggleSidebar;
+        window.openSidebar = openSidebar;
+        window.closeSidebar = closeSidebar;
+        window.goBack = goBack;
+        window.loadSection = loadSection;
+        window.toggleAlphabetsSection = toggleAlphabetsSection;
+        window.scrollToSection = scrollToSection;
+        window.checkInternetForAudio = checkInternetForAudio;
+        window.showOfflineMessage = showOfflineMessage;
+        window.playFrenchAudio = playFrenchAudio;
+        window.clearPlayingStates = clearPlayingStates;
+        window.playEntireAlphabet = playEntireAlphabet;
+        window.playAllWords = playAllWords;
+        window.stopAllAudio = stopAllAudio;
+        window.playAllAccents = playAllAccents;
+        window.playAccentExamples = playAccentExamples;
+        window.initializePage = initializePage;
+
+        console.log('🔥 All functions globally accessible for Firebase loading');
+    </script>
+</body>
+</html> 
