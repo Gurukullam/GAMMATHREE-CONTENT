@@ -25,7 +25,9 @@
     min-width: 280px;
     width: max-content;
     max-width: 280px; /* Base width */
-    overflow-x: visible;
+    max-height: 70vh; /* Enable vertical scroll */
+    overflow-y: auto; /* Vertical scrolling */
+    overflow-x: visible; /* Allow horizontal expansion */
     z-index: 1000;
     display: none;
     padding: 6px 0;
@@ -33,8 +35,9 @@
 }
 
 .your-menu-submenu.expanded {
-    max-width: 950px; /* Expanded width */
+    max-width: 95vw; /* Responsive expanded width */
     width: max-content;
+    overflow-x: auto; /* Enable horizontal scrolling */
 }
 
 .branching-submenu-container {
@@ -51,7 +54,8 @@
 .branching-submenu {
     display: none;
     width: max-content;
-    max-width: 650px;
+    max-width: 60vw; /* Responsive width */
+    max-height: 50vh; /* Enable vertical scroll */
     background: rgba(139, 69, 19, 0.05);
     border: 1px solid rgba(139, 69, 19, 0.2);
     border-radius: 6px;
@@ -59,6 +63,11 @@
     margin-top: 4px;
     padding: 8px;
     position: static;
+    /* Enable dual-direction scrolling */
+    overflow-x: auto; /* Horizontal scroll */
+    overflow-y: auto; /* Vertical scroll */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 69, 19, 0.4) rgba(139, 69, 19, 0.1);
     transition: all 0.3s ease;
 }
 
@@ -195,8 +204,10 @@ function toggleBranchingSubmenu(event, sectionType) {
 - [ ] `section1` → Your section names
 - [ ] `rgba(139, 69, 19, ...)` → Your color scheme
 - [ ] `280px` → Your base menu width
-- [ ] `950px` → Your expanded menu width
-- [ ] `650px` → Your branching submenu width
+- [ ] `95vw` → Your expanded menu width (responsive)
+- [ ] `60vw` → Your branching submenu width (responsive)
+- [ ] `70vh` → Your main menu height limit
+- [ ] `50vh` → Your branching submenu height limit
 
 ### Update These Functions:
 - [ ] `toggleYourMenuSubmenu()` → Match your menu name
@@ -206,9 +217,20 @@ function toggleBranchingSubmenu(event, sectionType) {
 
 ## 🎯 Key Features
 
+### ✅ Enhanced Scrolling System
+- **Vertical Scrolling:** Main menu limited to 70vh, branching to 50vh
+- **Horizontal Scrolling:** Responsive expansion up to 95vw with auto-scroll
+- **Mobile Optimized:** Touch scrolling with -webkit-overflow-scrolling
+- **Custom Scrollbars:** Styled for both directions with hover effects
+
+### ✅ Responsive Design
+- **Viewport Units:** Uses vw/vh instead of fixed pixels for responsiveness
+- **Mobile Adaptation:** Optimized layouts and scrolling for touch devices
+- **Dynamic Sizing:** Adapts to any screen size automatically
+
 ### ✅ Horizontal Expansion System
 - **Base State:** Menu at normal width (280px)
-- **Expanded State:** Menu grows horizontally (950px) when branching opens
+- **Expanded State:** Menu grows horizontally (95vw responsive) when branching opens
 - **Inline Layout:** Branching submenus appear inside main menu, not overlayed
 
 ### ✅ Flex Layout Control
@@ -232,12 +254,13 @@ Normal State:
 │ Section 2       │
 └─────────────────┘
 
-Expanded State:
+Expanded State with Scrolling:
 ┌─────────────────┬──────────────────────────────────────────────────────┐
-│ Section 1       │ Cat 1    │ Cat 2    │ Cat 3    │ Cat 4    │         │
+│ Section 1       │ Cat 1    │ Cat 2    │ Cat 3    │ Cat 4    │ [→] ─── │
 │ • Regular Item  │ ─────    │ ─────    │ ─────    │ ─────    │         │
-│ • Branching ▼   │ [1][2][3] │ [1][2][3] │ [1][2][3] │ [1][2][3] │         │
-│ Section 2       │          │          │          │          │         │
+│ • Branching ▼   │ [1][2][3] │ [1][2][3] │ [1][2][3] │ [1][2][3] │ [↓]     │
+│ Section 2       │          │          │          │          │ ───     │
+│ [↓] ──────────────────────────────────────────────────────────────────── │
 └─────────────────┴──────────────────────────────────────────────────────┘
 ```
 
@@ -250,4 +273,20 @@ Expanded State:
 5. **Customize colors and sizes**
 6. **Add mobile responsive tweaks**
 
-This system provides the exact same functionality as the IELTS Practice menu with unified horizontal expansion! 🎉 
+This system provides the exact same functionality as the IELTS Practice menu with unified horizontal expansion AND enhanced dual-direction scrolling! 🎉
+
+## 📊 **Enhanced Scrolling Features:**
+
+### ✅ **Desktop Enhancements:**
+- **Responsive Sizing:** Viewport-based widths (95vw) and heights (70vh/50vh)
+- **Dual Scrollbars:** Both horizontal and vertical with custom styling
+- **Smart Overflow:** Only shows scrollbars when content exceeds limits
+- **Smooth Performance:** Hardware-accelerated scrolling
+
+### ✅ **Mobile Optimizations:**
+- **Touch Scrolling:** `-webkit-overflow-scrolling: touch` for native feel
+- **Compact Design:** Smaller fonts and padding for mobile screens
+- **Full Viewport:** Responsive to device screen size
+- **Easy Navigation:** Swipe-friendly scrolling in both directions
+
+The template now handles ANY amount of content gracefully while maintaining the unified horizontal layout! 🚀 
