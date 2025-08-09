@@ -549,6 +549,12 @@
                     <button class="btn btn-success" onclick="startSync()">
                         ⬆️ Upload Selected
                     </button>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <label style="display: flex; align-items: center; gap: 5px; font-size: 14px;">
+                            <input type="checkbox" id="forceOverride" checked style="margin: 0;">
+                            <span>🔄 Force Override (Skip SHA checks)</span>
+                        </label>
+                    </div>
                     <button class="btn btn-success" onclick="startUploadProcess()" 
                             style="background: linear-gradient(135deg, #ff6b35, #f7931e); border: 2px solid #ff6b35;">
                         🚀 Upload All Folders & Files
@@ -793,7 +799,7 @@
                 return this.request(`${endpoint}?ref=${branch}`);
             }
             
-            async createOrUpdateFile(path, content, message, branch = 'main', sha = null) {
+            async createOrUpdateFile(path, content, message, branch = 'main', sha = null, forceOverride = false) {
                 console.log(`📝 Creating/updating file: ${path}`);
                 const endpoint = `/repos/${this.username}/${this.repo}/contents/${path}`;
                 const body = {
@@ -801,6 +807,22 @@
                     content: btoa(unescape(encodeURIComponent(content))), // Base64 encode
                     branch
                 };
+                
+                // If force override is enabled and no SHA provided, try to get it automatically
+                if (forceOverride && !sha) {
+                    try {
+                        const existingFile = await this.getContents(path, branch);
+                        if (existingFile && existingFile.sha) {
+                            sha = existingFile.sha;
+                            console.log(`🔄 Force override - auto-retrieved SHA: ${sha.substring(0, 8)}...`);
+                        }
+                    } catch (error) {
+                        // File doesn't exist, continue without SHA (new file)
+                        if (!error.message.includes('404')) {
+                            console.warn(`⚠️ Could not auto-retrieve SHA: ${error.message}`);
+                        }
+                    }
+                }
                 
                 if (sha) {
                     body.sha = sha;
@@ -1745,7 +1767,10 @@
         
         // Proceed with the actual upload
         async function proceedWithUpload(projectPath) {
-            const confirmUpload = confirm(`🚀 Upload ALL ${loadedRealFiles.size} files and folders to GitHub?\n\nFrom: ${projectPath || 'Selected Folder'}\n\nThis will upload:\n- All HTML files with real content\n- All subfolders and their contents\n- Maintain exact folder structure\n\nAre you sure you want to proceed?`);
+            const forceOverride = document.getElementById('forceOverride').checked;
+            const overrideText = forceOverride ? '\n🔄 FORCE OVERRIDE MODE: Will overwrite existing files without SHA checks' : '';
+            
+            const confirmUpload = confirm(`🚀 Upload ALL ${loadedRealFiles.size} files and folders to GitHub?\n\nFrom: ${projectPath || 'Selected Folder'}\n\nThis will upload:\n- All HTML files with real content\n- All subfolders and their contents\n- Maintain exact folder structure${overrideText}\n\nAre you sure you want to proceed?`);
             
             if (!confirmUpload) {
                 showStatus('Upload cancelled by user', 'info');
@@ -1799,13 +1824,37 @@
                         }
                         
                         const content = fileData.content;
+                        const forceOverride = document.getElementById('forceOverride').checked;
+                        
+                        // Check if file exists to get SHA for updates (unless force override is enabled)
+                        let existingSha = null;
+                        if (!forceOverride) {
+                            try {
+                                const existingFile = await githubApi.getContents(file.targetPath, document.getElementById('githubBranch').value);
+                                if (existingFile && existingFile.sha) {
+                                    existingSha = existingFile.sha;
+                                    console.log(`📄 File exists, using SHA: ${existingSha.substring(0, 8)}...`);
+                                }
+                            } catch (error) {
+                                // File doesn't exist, that's fine for new files
+                                if (error.message.includes('404')) {
+                                    console.log(`📄 New file: ${file.targetPath}`);
+                                } else {
+                                    console.warn(`⚠️ Could not check existing file: ${error.message}`);
+                                }
+                            }
+                        } else {
+                            console.log(`🔄 Force override mode: ${file.targetPath}`);
+                        }
                         
                         // Upload to GitHub with real content
                         await githubApi.createOrUpdateFile(
                             file.targetPath,
                             content,
                             `Upload ${file.name} via bulk upload`,
-                            document.getElementById('githubBranch').value
+                            document.getElementById('githubBranch').value,
+                            existingSha,
+                            forceOverride
                         );
                         
                         uploadedCount++;
@@ -1819,8 +1868,9 @@
                         continue;
                     }
                     
-                    // Small delay to avoid rate limiting
-                    await new Promise(resolve => setTimeout(resolve, 200));
+                    // Small delay to avoid rate limiting (reduced for force override mode)
+                    const delay = forceOverride ? 150 : 300;
+                    await new Promise(resolve => setTimeout(resolve, delay));
                 }
                 
                 // Show results
