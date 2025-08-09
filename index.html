@@ -5292,21 +5292,8 @@
             switch(option) {
                 case 'Writing':
                     console.log('✍️ Loading IELTS General Writing...');
-                    
-                    // For initial testing, go directly to Essay Writing
-                    // Later you can add the choice dialog back
-                    const essayPath = 'Guruvammal-Database/IELTS/General/Writing/GA_IELTS_ESSAY_Writting.html';
-                    console.log('📝 Opening IELTS General Essay Writing...');
-                    console.log('🔍 DEBUG: Attempting to navigate to:', essayPath);
-                    console.log('🔍 DEBUG: Current location:', window.location.href);
-                    
-                    try {
-                        window.location.href = essayPath;
-                        console.log('✅ Navigation attempted successfully');
-                    } catch (error) {
-                        console.error('❌ Navigation failed:', error);
-                        alert('Error opening writing page: ' + error.message);
-                    }
+                    // Navigate directly to Essay Writing page
+                    window.location.href = 'Guruvammal-Database/IELTS/General/Writing/GA_IELTS_ESSAY_Writting.html';
                     break;
                 case 'Reading':
                     console.log('📖 Loading IELTS General Reading...');
