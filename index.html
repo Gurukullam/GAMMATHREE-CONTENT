@@ -1119,7 +1119,7 @@
             margin-bottom: 4px;
             padding: 2px 0;
             border-bottom: 1px solid rgba(139, 69, 19, 0.15);
-            text-align: center;
+            text-align: left;
             white-space: nowrap;
         }
 
@@ -1132,7 +1132,7 @@
             transition: all 0.2s ease;
             border-radius: 3px;
             margin: 1px 0;
-            text-align: center;
+            text-align: left;
             white-space: nowrap;
             min-width: 60px; /* Wider for better readability */
         }
@@ -3362,9 +3362,27 @@
                     <li class="lingo-menu" onmouseenter="cancelSubmenuTimeout('lingo')" onmouseleave="startSubmenuTimeout('lingo')">
                         <a href="#lingo" onclick="toggleLingoSubmenu(event)"><i class="fas fa-language"></i> Lingo Launch <i class="fas fa-chevron-down lingo-arrow"></i></a>
                         <div class="lingo-submenu" id="lingoSubmenu" onmouseenter="cancelSubmenuTimeout('lingo')" onmouseleave="startSubmenuTimeout('lingo')">
-                            <a href="#french" onclick="selectLanguage('French')"><i class="fas fa-flag"></i> French</a>
-                            <a href="#english" onclick="selectLanguage('English')"><i class="fas fa-flag"></i> English</a>
-                            <a href="#tamil" onclick="selectLanguage('Tamil')"><i class="fas fa-flag"></i> Tamil</a>
+                            <!-- French with Branching Submenu -->
+                            <div class="nested-submenu-container">
+                                <a href="#french-menu" onclick="toggleFrenchLingoSubmenu(event)" class="submenu-toggle">
+                                    <i class="fas fa-flag"></i> French
+                                    <i class="fas fa-chevron-right submenu-arrow" id="french-lingo-arrow"></i>
+                                </a>
+                                <div class="branching-submenu" id="frenchLingoSubmenu">
+                                    <div class="branching-section">
+                                        <div class="branching-section-title"><strong>Basics</strong></div>
+                                        <a href="#alphabets" onclick="selectFrenchSection('alphabets')">🔤 Alphabets</a>
+                                        <a href="#numbers" onclick="selectFrenchSection('numbers')">🔢 Numbers</a>
+                                    </div>
+                                    <div class="branching-section">
+                                        <div class="branching-section-title"><strong>Communication</strong></div>
+                                        <a href="#greetings" onclick="selectFrenchSection('greetings')">👋 Greetings</a>
+                                        <a href="#vocabulary" onclick="selectFrenchSection('vocabulary')">📖 Vocabulary</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#english"><i class="fas fa-flag"></i> English</a>
+                            <a href="#tamil"><i class="fas fa-flag"></i> Tamil</a>
                         </div>
                     </li>
 
@@ -5187,19 +5205,9 @@
                     loadPricingPage();
                     break;
                 
-                // Language intro pages
-                case 'english-intro':
-                    loadEmbeddedPageContent('english-intro', getEnglishIntroContent());
-                    activateEnglishContentMode();
-                    break;
-                case 'french-intro':
-                    loadEmbeddedPageContent('french-intro', getFrenchIntroContent());
-                    activateFrenchContentMode();
-                    break;
-                case 'tamil-intro':
-                    loadEmbeddedPageContent('tamil-intro', getTamilIntroContent());
-                    activateTamilContentMode();
-                    break;
+                // Language intro pages - REMOVED FOR CUSTOM IMPLEMENTATION
+                // The language routing has been removed to allow custom implementation
+                // You can add your own routing logic for: english-intro, french-intro, tamil-intro
                 // Test preparation pages
                 case 'ielts-intro':
                     loadEmbeddedPageContent('ielts-intro', getIELTSIntroContent());
@@ -5369,35 +5377,94 @@
             displayPageContent(pageName, content);
         }
 
-        // Language Selection Function
-        function selectLanguage(language) {
-            // Close the submenu first
-            const submenu = document.getElementById('lingoSubmenu');
-            const menuParent = submenu.closest('.lingo-menu');
-            submenu.classList.remove('show');
-            menuParent.classList.remove('active');
+        // Language Selection Function - REMOVED
+        // The selectLanguage function has been removed to allow custom implementation
+        // You can now add your own click handlers to the language menu items:
+        // - French: href="#french"
+        // - English: href="#english" 
+        // - Tamil: href="#tamil"
+
+        // French Lingo Submenu Toggle Function
+        function toggleFrenchLingoSubmenu(event) {
+            event.preventDefault();
+            event.stopPropagation();
             
-            // Load the appropriate intro page content directly
-            switch(language) {
-                case 'English':
-                    loadEmbeddedPageContent('english-intro', getEnglishIntroContent());
-                    activateEnglishContentMode();
-                    break;
-                case 'French':
-                    loadEmbeddedPageContent('french-intro', getFrenchIntroContent());
-                    activateFrenchContentMode();
-                    break;
-                case 'Tamil':
-                    loadEmbeddedPageContent('tamil-intro', getTamilIntroContent());
-                    activateTamilContentMode();
-                    break;
-                default:
-                    alert(`${language} content will be available soon!`);
-                    return;
+            const submenuId = 'frenchLingoSubmenu';
+            const arrowId = 'french-lingo-arrow';
+            
+            const branchingSubmenu = document.getElementById(submenuId);
+            const arrow = document.getElementById(arrowId);
+            const lingoSubmenu = document.getElementById('lingoSubmenu');
+            
+            const isCurrentlyOpen = branchingSubmenu.classList.contains('show');
+            
+            if (isCurrentlyOpen) {
+                // CLOSING: Just close this submenu
+                branchingSubmenu.classList.remove('show');
+                arrow.classList.remove('rotated');
+                const container = branchingSubmenu.closest('.nested-submenu-container');
+                if (container) {
+                    container.classList.remove('horizontal-layout');
+                }
+                console.log('🇫🇷 French Lingo submenu closed');
+            } else {
+                // OPENING: Close all others first, then open this one
+                closeAllSubmenusGlobally(submenuId);
+                
+                // Ensure the Lingo main submenu is open
+                if (!lingoSubmenu.classList.contains('show')) {
+                    lingoSubmenu.classList.add('show');
+                    const menuParent = lingoSubmenu.closest('.lingo-menu');
+                    if (menuParent) {
+                        menuParent.classList.add('active');
+                    }
+                }
+                
+                // Now open this submenu
+                const container = branchingSubmenu.closest('.nested-submenu-container');
+                if (container) {
+                    container.classList.add('horizontal-layout');
+                }
+                
+                branchingSubmenu.classList.add('show');
+                arrow.classList.add('rotated');
+                
+                // Cancel any auto-hide timer since we're manually opening a nested submenu
+                if (window.cancelSubmenuTimeout) {
+                    window.cancelSubmenuTimeout('lingo');
+                }
+                
+                console.log('🇫🇷 French Lingo submenu opened - Horizontal layout activated');
             }
         }
 
-        // French Content Mode Management
+        // French Section Selection Function
+        function selectFrenchSection(sectionType) {
+            console.log(`🇫🇷 Navigating to French ${sectionType} section`);
+            
+            // Close all submenus first
+            closeAllSubmenusGlobally();
+            
+            // Map section types to their corresponding HTML files
+            const sectionFiles = {
+                'alphabets': 'Guruvammal-Database/Languages/French/GA_FR_Alphabets_Accents.html',
+                'numbers': 'Guruvammal-Database/Languages/French/GA_FR_Numbers_1_to_100.html',
+                'greetings': 'Guruvammal-Database/Languages/French/GA_FR_Beginner_Greetings.html',
+                'vocabulary': 'Guruvammal-Database/Languages/French/GA_FR_Beg_Vocabulary.html'
+            };
+            
+            const htmlFile = sectionFiles[sectionType];
+            if (htmlFile) {
+                console.log(`🔄 Navigating to ${htmlFile}`);
+                window.location.href = htmlFile;
+            } else {
+                console.warn(`❌ Unknown French section: ${sectionType}`);
+                alert(`French ${sectionType} section will be available soon!`);
+            }
+        }
+
+        // French Content Mode Management - DISABLED FOR CUSTOM IMPLEMENTATION
+        /* COMMENTED OUT - Available for reference if needed
         function activateFrenchContentMode() {
             console.log('🇫🇷 Activating French content mode');
             document.body.classList.add('french-content-active');
@@ -5489,10 +5556,12 @@
                 alert(`French ${sectionId} section will be available soon!`);
             }
         }
+        */ // End of commented French Content Mode Management
 
 
 
-        // English Content Mode Management
+        // English Content Mode Management - DISABLED FOR CUSTOM IMPLEMENTATION
+        /* COMMENTED OUT - Available for reference if needed
         function activateEnglishContentMode() {
             console.log('🇺🇸 Activating English content mode');
             document.body.classList.add('english-content-active');
@@ -5582,8 +5651,10 @@
                 alert(`English ${sectionId} section will be available soon!`);
             }
         }
+        */ // End of commented English Content Mode Management
 
-        // Tamil Content Mode Management
+        // Tamil Content Mode Management - DISABLED FOR CUSTOM IMPLEMENTATION  
+        /* COMMENTED OUT - Available for reference if needed
         function activateTamilContentMode() {
             console.log('🇮🇳 Activating Tamil content mode');
             document.body.classList.add('tamil-content-active');
@@ -5673,6 +5744,7 @@
                 alert(`Tamil ${sectionId} section will be available soon!`);
             }
         }
+        */ // End of commented Tamil Content Mode Management
 
         // Lingo Tests Submenu Functions
         function toggleTestsSubmenu(event) {
@@ -5809,6 +5881,12 @@
                     return;
                 }
                 
+                // Don't close Lingo submenu if we're opening a French submenu within it
+                if (menu.id === 'lingoSubmenu' && exceptSubmenuId && 
+                    exceptSubmenuId.includes('frenchLingo')) {
+                    return;
+                }
+                
                 const submenu = document.getElementById(menu.id);
                 const parent = document.querySelector(menu.parent);
                 if (submenu && parent) {
@@ -5827,7 +5905,7 @@
                 }
             });
 
-            // 3. Close ALL branching submenus (writing sections)
+            // 3. Close ALL branching submenus (writing sections, french lingo)
             const allBranchingSubmenus = document.querySelectorAll('.branching-submenu');
             allBranchingSubmenus.forEach(submenu => {
                 if (submenu.id === exceptSubmenuId) return; // Skip the submenu we're opening
@@ -5856,7 +5934,8 @@
                     (exceptSubmenuId.includes('generalListening') && arrowId === 'general-listening-arrow') ||
                     (exceptSubmenuId.includes('academicListening') && arrowId === 'academic-listening-arrow') ||
                     (exceptSubmenuId.includes('generalWriting') && arrowId === 'general-writing-arrow') ||
-                    (exceptSubmenuId.includes('academicWriting') && arrowId === 'academic-writing-arrow')
+                    (exceptSubmenuId.includes('academicWriting') && arrowId === 'academic-writing-arrow') ||
+                    (exceptSubmenuId.includes('frenchLingo') && arrowId === 'french-lingo-arrow')
                 );
                 
                 if (!isTargetArrow) {
