@@ -6,10 +6,31 @@
     <title>Unified Horizontal Menu Template</title>
     <style>
         /* =================================================================== */
-        /* UNIFIED HORIZONTAL MENU SYSTEM TEMPLATE                           */
+        /* UNIFIED HORIZONTAL MENU SYSTEM TEMPLATE - V2.0                    */
         /* =================================================================== */
         /* This template provides a complete system for creating expandable    */
         /* horizontal menus with inline submenus and branching functionality   */
+        /*                                                                     */
+        /* 🚀 KEY FEATURES:                                                    */
+        /* 1. Horizontal Branching: Submenus expand right instead of down     */
+        /* 2. Smart Container Layout: Uses flexbox for perfect alignment      */
+        /* 3. Global State Management: Comprehensive auto-collapse system     */
+        /* 4. Parent-Child Relationships: Nested submenus maintain parents    */
+        /* 5. Scope Separation: Clear opening/closing logic distinction       */
+        /* 6. Timer Integration: Auto-hide compatible with manual controls    */
+        /* 7. Debug Logging: Console tracking for troubleshooting             */
+        /*                                                                     */
+        /* 🌍 GLOBAL SUBMENU MANAGEMENT:                                       */
+        /* - Universal auto-collapse: Only one submenu active at a time       */
+        /* - Smart parent preservation: Parents stay open for nested children */
+        /* - Intelligent state reset: Arrows, layouts, states properly managed*/
+        /* - Cross-menu protection: Different main menus close each other     */
+        /*                                                                     */
+        /* 🔧 IMPLEMENTATION:                                                  */
+        /* 1. Copy the closeAllSubmenusGlobally() function                    */
+        /* 2. Update toggle functions to use scope-separated logic            */
+        /* 3. Customize mainSubmenus array for your specific menus            */
+        /* 4. Test cross-menu interactions thoroughly                         */
         /* =================================================================== */
 
         /* BASE MENU CONTAINER */
@@ -17,7 +38,7 @@
             position: relative;
         }
 
-        /* MAIN SUBMENU - Expandable Horizontal Container */
+        /* MAIN SUBMENU - Expandable Horizontal Container with Enhanced Scrolling */
         .main-submenu {
             position: absolute;
             top: 100%;
@@ -30,8 +51,8 @@
             min-width: 280px; /* Base width for main menu */
             width: max-content; /* Fit content width exactly */
             max-width: 280px; /* Base maximum width */
-            max-height: fit-content;
-            overflow-y: visible;
+            max-height: 70vh; /* Maximum height - enable vertical scroll */
+            overflow-y: auto; /* Enable vertical scrolling */
             overflow-x: visible; /* Allow horizontal expansion */
             z-index: 1000;
             display: none;
@@ -46,27 +67,35 @@
 
         /* EXPANDED STATE - Horizontally expanded when branching submenu is active */
         .main-submenu.expanded {
-            max-width: 950px; /* Expanded to accommodate main menu + branching submenu */
+            max-width: 95vw; /* Responsive expanded width - enable horizontal scroll */
             width: max-content;
+            overflow-x: auto; /* Enable horizontal scrolling when content exceeds viewport */
         }
 
-        /* Webkit scrollbar styling for better browser support */
+        /* Webkit scrollbar styling - Both vertical and horizontal */
         .main-submenu::-webkit-scrollbar {
-            width: 6px;
+            width: 8px; /* Vertical scrollbar width */
+            height: 8px; /* Horizontal scrollbar height */
         }
 
         .main-submenu::-webkit-scrollbar-track {
             background: rgba(139, 69, 19, 0.1);
-            border-radius: 3px;
+            border-radius: 4px;
         }
 
         .main-submenu::-webkit-scrollbar-thumb {
             background: rgba(139, 69, 19, 0.3);
-            border-radius: 3px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .main-submenu::-webkit-scrollbar-thumb:hover {
             background: rgba(139, 69, 19, 0.5);
+        }
+
+        /* Corner where horizontal and vertical scrollbars meet */
+        .main-submenu::-webkit-scrollbar-corner {
+            background: rgba(139, 69, 19, 0.1);
         }
 
         /* SUBMENU SECTIONS - Main content areas */
@@ -135,11 +164,12 @@
             transform: rotate(90deg);
         }
 
-        /* BRANCHING SUBMENU - Inline horizontal content */
+        /* BRANCHING SUBMENU - Inline horizontal content with Enhanced Scrolling */
         .branching-submenu {
             display: none; /* Hidden by default */
             width: max-content;
-            max-width: 650px; /* Horizontal layout width */
+            max-width: 60vw; /* Responsive horizontal layout width */
+            max-height: 50vh; /* Maximum height for vertical scroll */
             background: rgba(139, 69, 19, 0.05);
             border: 1px solid rgba(139, 69, 19, 0.2);
             border-radius: 6px;
@@ -148,6 +178,12 @@
             padding: 8px;
             /* Remove absolute positioning - now inline */
             position: static;
+            /* Enable scrolling for branching content */
+            overflow-x: auto; /* Horizontal scroll for wide content */
+            overflow-y: auto; /* Vertical scroll for tall content */
+            /* Custom scrollbar for branching submenu */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(139, 69, 19, 0.4) rgba(139, 69, 19, 0.1);
             /* Smooth transition for showing/hiding */
             transition: all 0.3s ease;
         }
@@ -203,6 +239,31 @@
             transform: translateY(-1px);
         }
 
+        /* Branching submenu scrollbar styling - Both vertical and horizontal */
+        .branching-submenu::-webkit-scrollbar {
+            width: 6px;
+            height: 6px; /* Height for horizontal scrollbar */
+        }
+
+        .branching-submenu::-webkit-scrollbar-track {
+            background: rgba(139, 69, 19, 0.1);
+            border-radius: 3px;
+        }
+
+        .branching-submenu::-webkit-scrollbar-thumb {
+            background: rgba(139, 69, 19, 0.4);
+            border-radius: 3px;
+        }
+
+        .branching-submenu::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 69, 19, 0.6);
+        }
+
+        /* Corner where horizontal and vertical scrollbars meet */
+        .branching-submenu::-webkit-scrollbar-corner {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
         /* MENU ARROW INDICATORS */
         .menu-arrow {
             transition: transform 0.3s ease;
@@ -213,28 +274,71 @@
             transform: rotate(180deg);
         }
 
-        /* MOBILE RESPONSIVE */
+        /* MOBILE RESPONSIVE with Enhanced Scrolling */
         @media (max-width: 768px) {
             .main-submenu {
                 min-width: 90vw;
                 max-width: 90vw;
                 left: 50%;
                 transform: translateX(-50%);
+                max-height: 75vh; /* Height limit for mobile */
+                overflow-y: auto; /* Enable vertical scrolling */
+                overflow-x: auto; /* Enable horizontal scrolling when expanded */
+                /* Enhanced mobile scrolling */
+                -webkit-overflow-scrolling: touch;
             }
 
             .main-submenu.expanded {
                 max-width: 95vw;
+                max-height: 80vh; /* Larger when expanded */
+                overflow-x: auto; /* Enable horizontal scroll for wide content */
             }
 
             .branching-submenu {
-                max-width: 85vw;
+                position: static; /* Better mobile flow */
+                min-width: auto;
+                max-width: 85vw; /* Responsive width */
+                max-height: 50vh; /* Height limit with vertical scroll */
                 margin-left: 4px;
                 padding: 6px;
+                /* Enhanced mobile scrolling for branching */
+                overflow-x: auto; /* Horizontal scroll for wide grids */
+                overflow-y: auto; /* Vertical scroll for tall content */
+                -webkit-overflow-scrolling: touch;
             }
 
             .branching-section {
-                min-width: 60px;
+                min-width: 60px; /* Compact for mobile */
                 margin-right: 8px;
+            }
+
+            .branching-section-title {
+                font-size: 0.7rem; /* Smaller on mobile */
+                padding: 1px 3px;
+            }
+
+            .branching-section a {
+                padding: 1px 3px; /* Compact for mobile */
+                font-size: 0.6rem; /* Smaller practice numbers */
+                min-width: 14px;
+            }
+
+            /* Enhanced mobile scrollbar styling */
+            .main-submenu::-webkit-scrollbar,
+            .branching-submenu::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+            }
+
+            .main-submenu::-webkit-scrollbar-thumb,
+            .branching-submenu::-webkit-scrollbar-thumb {
+                background: rgba(139, 69, 19, 0.6);
+                border-radius: 3px;
+            }
+
+            .main-submenu::-webkit-scrollbar-track,
+            .branching-submenu::-webkit-scrollbar-track {
+                background: rgba(139, 69, 19, 0.1);
             }
         }
     </style>
@@ -359,6 +463,89 @@
             }
         }
 
+        // 🌍 GLOBAL SUBMENU MANAGEMENT SYSTEM
+        // This function closes ALL submenus throughout the entire application
+        function closeAllSubmenusGlobally(exceptSubmenuId = null) {
+            console.log('🌍 Global submenu cleanup initiated', exceptSubmenuId ? `(except: ${exceptSubmenuId})` : '');
+            
+            // 1. Close ALL main submenus (customize this array for your application)
+            const mainSubmenus = [
+                { id: 'exampleSubmenu', parent: '.menu-container' },
+                { id: 'otherSubmenu', parent: '.other-menu' },
+                // Add your main submenus here
+            ];
+
+            mainSubmenus.forEach(menu => {
+                if (menu.id === exceptSubmenuId) return; // Skip the submenu we're opening
+                
+                // Don't close parent submenu if we're opening a nested/branching submenu within it
+                if (menu.id === 'exampleSubmenu' && exceptSubmenuId && 
+                    (exceptSubmenuId.includes('Nested') || exceptSubmenuId.includes('Branching'))) {
+                    return;
+                }
+                
+                const submenu = document.getElementById(menu.id);
+                const parent = document.querySelector(menu.parent);
+                if (submenu && parent) {
+                    submenu.classList.remove('show');
+                    parent.classList.remove('active');
+                }
+            });
+
+            // 2. Close ALL nested submenus
+            const allNestedSubmenus = document.querySelectorAll('.nested-submenu');
+            allNestedSubmenus.forEach(submenu => {
+                if (submenu.id === exceptSubmenuId) return;
+                if (submenu.classList.contains('show')) {
+                    submenu.classList.remove('show');
+                }
+            });
+
+            // 3. Close ALL branching submenus
+            const allBranchingSubmenus = document.querySelectorAll('.branching-submenu');
+            allBranchingSubmenus.forEach(submenu => {
+                if (submenu.id === exceptSubmenuId) return;
+                if (submenu.classList.contains('show')) {
+                    submenu.classList.remove('show');
+                }
+            });
+
+            // 4. Reset horizontal layouts (except for the container of the submenu we're opening)
+            const allContainers = document.querySelectorAll('.nested-submenu-container, .branching-submenu-container');
+            allContainers.forEach(container => {
+                const submenuInContainer = container.querySelector(`#${exceptSubmenuId}`);
+                if (!submenuInContainer) {
+                    container.classList.remove('horizontal-layout');
+                }
+            });
+
+            // 5. Reset submenu arrows (except for the arrow of the submenu we're opening)
+            const allArrows = document.querySelectorAll('.submenu-arrow');
+            allArrows.forEach(arrow => {
+                const arrowId = arrow.id;
+                const isTargetArrow = exceptSubmenuId && arrowId.includes(exceptSubmenuId.replace('Submenu', ''));
+                if (!isTargetArrow) {
+                    arrow.classList.remove('rotated');
+                }
+            });
+
+            // 6. Reset main menu arrows (except for the main menu we're opening)
+            const mainArrows = [
+                { class: '.menu-arrow', id: 'exampleSubmenu' },
+                // Add your main menu arrows here
+            ];
+            mainArrows.forEach(arrowInfo => {
+                if (arrowInfo.id !== exceptSubmenuId) {
+                    const arrow = document.querySelector(arrowInfo.class);
+                    if (arrow) {
+                        arrow.classList.remove('rotated');
+                    }
+                }
+            });
+
+            console.log('✅ Global submenu cleanup completed');
+        }
+
         // Toggle main submenu
         function toggleMainSubmenu(event) {
             event.preventDefault();
@@ -367,20 +554,17 @@
             const submenu = document.getElementById('exampleSubmenu');
             const menuParent = submenu.closest('.menu-container');
             const arrow = menuParent.querySelector('.menu-arrow');
-            
             const isCurrentlyOpen = submenu.classList.contains('show');
             
-            // Close all other submenus first
-            closeAllOtherSubmenus('exampleMenu');
-            
             if (isCurrentlyOpen) {
-                // Close current submenu
+                // CLOSING: Just close this submenu
                 submenu.classList.remove('show');
                 menuParent.classList.remove('active');
                 arrow.classList.remove('rotated');
                 cancelMenuTimeout('exampleMenu');
             } else {
-                // Open current submenu
+                // OPENING: Close all others first, then open this one
+                closeAllSubmenusGlobally('exampleSubmenu');
                 submenu.classList.add('show');
                 menuParent.classList.add('active');
                 arrow.classList.add('rotated');
@@ -398,6 +582,8 @@
             event.preventDefault();
             event.stopPropagation();
             
+            console.log(`✨ Attempting to toggle ${sectionType} Branching submenu`);
+            
             const submenuId = sectionType + 'BranchingSubmenu';
             const arrowId = sectionType + '-arrow';
             
@@ -405,32 +591,48 @@
             const arrow = document.getElementById(arrowId);
             const mainSubmenu = document.getElementById('exampleSubmenu');
             
-            // Close other branching submenus if open
-            const allBranchingSubmenus = document.querySelectorAll('.branching-submenu');
-            const allArrows = document.querySelectorAll('.submenu-arrow');
+            if (!branchingSubmenu) {
+                console.error(`❌ Could not find submenu: ${submenuId}`);
+                return;
+            }
             
-            allBranchingSubmenus.forEach(submenu => {
-                if (submenu.id !== submenuId && submenu.classList.contains('show')) {
-                    submenu.classList.remove('show');
-                    // Reset horizontal layout for other submenus
-                    const container = submenu.closest('.branching-submenu-container');
-                    if (container) {
-                        container.classList.remove('horizontal-layout');
+            const isCurrentlyOpen = branchingSubmenu.classList.contains('show');
+            console.log(`✨ Submenu current state: ${isCurrentlyOpen ? 'OPEN' : 'CLOSED'}`);
+            
+            if (isCurrentlyOpen) {
+                // CLOSING: Just close this submenu
+                branchingSubmenu.classList.remove('show');
+                arrow.classList.remove('rotated');
+                const container = branchingSubmenu.closest('.branching-submenu-container');
+                if (container) {
+                    container.classList.remove('horizontal-layout');
+                }
+                
+                // Check if any other branching submenu is still open
+                const otherSubmenuId = sectionType === 'section1' ? 'section2BranchingSubmenu' : 'section1BranchingSubmenu';
+                const otherSubmenu = document.getElementById(otherSubmenuId);
+                if (!otherSubmenu || !otherSubmenu.classList.contains('show')) {
+                    // No other branching submenu open, check if any nested submenus are open
+                    const anyNestedOpen = document.querySelector('.nested-submenu.show');
+                    if (!anyNestedOpen) {
+                        mainSubmenu.classList.remove('expanded');
                     }
                 }
-            });
-            
-            allArrows.forEach(arr => {
-                if (arr.id !== arrowId) {
-                    arr.classList.remove('rotated');
+                console.log(`✨ ${sectionType} Branching submenu closed`);
+            } else {
+                // OPENING: Close all others first, but ensure main submenu is open
+                closeAllSubmenusGlobally(submenuId);
+                
+                // Ensure the main submenu is open
+                if (!mainSubmenu.classList.contains('show')) {
+                    mainSubmenu.classList.add('show');
+                    const menuParent = mainSubmenu.closest('.menu-container');
+                    if (menuParent) {
+                        menuParent.classList.add('active');
+                    }
                 }
-            });
-            
-            // Toggle current branching submenu
-            const isOpening = !branchingSubmenu.classList.contains('show');
-            
-            if (isOpening) {
-                // ENABLE HORIZONTAL LAYOUT
+                
+                // Now open this submenu
                 const container = branchingSubmenu.closest('.branching-submenu-container');
                 if (container) {
                     container.classList.add('horizontal-layout');
@@ -439,26 +641,13 @@
                 branchingSubmenu.classList.add('show');
                 arrow.classList.add('rotated');
                 mainSubmenu.classList.add('expanded');
-                console.log(`🎯 ${sectionType} branching submenu opened - Horizontal layout activated`);
                 
-            } else {
-                // DISABLE HORIZONTAL LAYOUT
-                branchingSubmenu.classList.remove('show');
-                arrow.classList.remove('rotated');
-                
-                const container = branchingSubmenu.closest('.branching-submenu-container');
-                if (container) {
-                    container.classList.remove('horizontal-layout');
+                // Cancel any auto-hide timer since we're manually opening a branching submenu
+                if (window.cancelMenuTimeout) {
+                    window.cancelMenuTimeout('exampleMenu');
                 }
                 
-                // Check if any branching submenu is still open
-                setTimeout(() => {
-                    const anyBranchingOpen = document.querySelector('.branching-submenu.show');
-                    if (!anyBranchingOpen) {
-                        mainSubmenu.classList.remove('expanded');
-                        console.log(`🎯 ${sectionType} branching submenu closed - Main menu contracted`);
-                    }
-                }, 150);
+                console.log(`✨ ${sectionType} Branching submenu opened - Horizontal layout activated`);
             }
         }
 
@@ -590,10 +779,12 @@
         <h3>🔧 Key Customization Points:</h3>
         <ul>
             <li><strong>Menu Width:</strong> Adjust <code>min-width</code>, <code>max-width</code> in <code>.main-submenu</code></li>
-            <li><strong>Expanded Width:</strong> Modify <code>max-width: 950px</code> in <code>.main-submenu.expanded</code></li>
-            <li><strong>Branching Width:</strong> Change <code>max-width: 650px</code> in <code>.branching-submenu</code></li>
+            <li><strong>Expanded Width:</strong> Modify <code>max-width: 95vw</code> in <code>.main-submenu.expanded</code></li>
+            <li><strong>Branching Width:</strong> Change <code>max-width: 60vw</code> in <code>.branching-submenu</code></li>
+            <li><strong>Vertical Heights:</strong> Adjust <code>max-height: 70vh</code> (main) and <code>max-height: 50vh</code> (branching)</li>
             <li><strong>Colors:</strong> Update <code>rgba(139, 69, 19, ...)</code> values throughout</li>
             <li><strong>Animation Speed:</strong> Modify <code>transition: ... 0.3s ease</code> values</li>
+            <li><strong>Scrollbar Styling:</strong> Customize scrollbar colors and sizes for both directions</li>
         </ul>
         
         <h3>🎨 CSS Class Naming Convention:</h3>
@@ -616,14 +807,20 @@ function closeYourMenuOnClickOutside(event) { ... }
         
         <h3>✨ Features Included:</h3>
         <ul>
-            <li>✅ Unified horizontal expansion (280px → 950px)</li>
+            <li>✅ Unified horizontal expansion (280px → 95vw responsive)</li>
             <li>✅ Inline branching submenus with flex layout</li>
+            <li>✅ <strong>Dual-direction scrolling (vertical + horizontal)</strong></li>
+            <li>✅ <strong>Responsive viewport-based sizing (vw/vh units)</strong></li>
+            <li>✅ <strong>Enhanced mobile scrolling with touch support</strong></li>
+            <li>✅ <strong>Custom scrollbars for both directions</strong></li>
             <li>✅ Smooth CSS transitions</li>
             <li>✅ Auto-hide with hover management</li>
             <li>✅ Click-outside closing</li>
             <li>✅ Mobile responsive design</li>
             <li>✅ Multiple branching sections support</li>
             <li>✅ Conflict prevention between branches</li>
+            <li>✅ <strong>Viewport height limits prevent screen overflow</strong></li>
+            <li>✅ <strong>Touch-optimized scrolling for mobile devices</strong></li>
         </ul>
     </div>
 </body>
