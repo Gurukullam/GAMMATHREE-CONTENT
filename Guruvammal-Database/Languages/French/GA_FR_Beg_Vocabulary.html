@@ -104,39 +104,54 @@
             box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
         }
 
-        .gk-logo {
-            width: 50px;
-            height: 50px;
+        .master-guruvammal-logo {
+            /* Layout & Structure */
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .gk-logo:hover {
-            transform: scale(1.1);
-        }
-
-        .gk-logo .letters {
-            font-family: 'Century Gothic', 'Futura', 'Avenir', sans-serif;
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: -1px;
-            line-height: 1;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(139, 69, 19, 0.25) 50%, rgba(205, 133, 63, 0.2) 100%);
-            backdrop-filter: blur(10px);
-            color: #5d3a0a;
-            padding: 8px;
-            border-radius: 4px;
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.3), 0 0 30px rgba(212, 175, 55, 0.2);
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             width: 40px;
             height: 40px;
             box-sizing: border-box;
+            
+            /* Typography */
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1;
+            color: #5d3a0a;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+            
+            /* Golden Square Background */
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(139, 69, 19, 0.25) 50%, rgba(205, 133, 63, 0.2) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 4px;
+            padding: 8px;
+            
+            /* Visual Effects */
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.3), 0 0 30px rgba(212, 175, 55, 0.2);
+            z-index: 10000;
+            
+            /* Interaction */
+            transition: all 0.3s ease;
+        }
+
+        /* Tamil script corner element within Master Guruvammal Logo */
+        .master-guruvammal-logo .tamil-corner {
+            position: absolute;
+            top: 1px;
+            right: 2px;
+            font-size: 8px;
+            color: #5d3a0a;
+            font-weight: 900;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Hover effect for Master Guruvammal Logo */
+        .master-guruvammal-logo:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.4), 0 0 40px rgba(212, 175, 55, 0.3);
         }
 
         /* Back Label under Logo */
@@ -949,8 +964,8 @@
 <body>
     <!-- Guruvammal Logo as Back Button -->
     <div class="gk-logo-container" onclick="handleBackButton()" title="Back to Home">
-        <div class="gk-logo">
-            <div class="letters">Ga</div>
+        <div class="master-guruvammal-logo">
+            Ga<span class="tamil-corner">அ</span>
         </div>
         <div class="back-label">Back</div>
     </div>
@@ -5562,28 +5577,17 @@
             }
         }
 
-        // Back button functionality - returns to French menu
+        // Back button functionality - returns to home page
         function handleBackButton() {
             console.log('🔄 Back button clicked from French Vocabulary page');
             
-            const previousPageType = sessionStorage.getItem('previousPageType');
-            const previousPage = sessionStorage.getItem('previousPage');
+            // Clear any session storage
+            sessionStorage.removeItem('previousPage');
+            sessionStorage.removeItem('previousPageType');
             
-            console.log(`🔄 Previous page type: ${previousPageType}, Previous page: ${previousPage}`);
-            
-            if (previousPageType === 'french-menu' && previousPage === 'french-intro') {
-                // Clear session storage
-                sessionStorage.removeItem('previousPage');
-                sessionStorage.removeItem('previousPageType');
-                
-                // Navigate back to index.html with French intro
-                console.log(`🔄 Returning to French intro page`);
-                window.location.href = 'index.html#french-intro';
-            } else {
-                // Default back behavior - go to home page
-                console.log(`🔄 Returning to home page`);
-                window.location.href = 'index.html#home';
-            }
+            // Always navigate to home page
+            console.log(`🔄 Returning to home page`);
+            window.location.href = '../../../index.html#home';
         }
 
         // Navigation to sections
