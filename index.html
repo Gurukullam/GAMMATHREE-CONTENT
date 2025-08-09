@@ -832,12 +832,12 @@
             margin-left: 0.3rem;
         }
 
-        /* IELTS General Submenu Styles */
-        .ielts-general-menu {
+        /* IELTS Practice Submenu Styles */
+        .ielts-practice-menu {
             position: relative;
         }
 
-        .ielts-general-submenu {
+        .ielts-practice-submenu {
             position: absolute;
             top: 100%;
             left: 0;
@@ -846,103 +846,310 @@
             border: 1px solid rgba(139, 69, 19, 0.2);
             border-radius: 8px;
             box-shadow: 0 8px 25px rgba(139, 69, 19, 0.2);
-            min-width: 200px;
+            min-width: auto; /* Auto width based on content */
+            width: max-content; /* Fit content width exactly */
+            max-width: 280px; /* Reduced maximum width */
+            max-height: fit-content; /* Fit content instead of fixed height */
+            overflow-y: visible; /* Remove scrolling unless absolutely necessary */
+            overflow-x: visible; /* Allow horizontal overflow for vertical panels */
             z-index: 1000;
             display: none;
             margin-top: 5px;
-            padding: 8px 0;
+            padding: 6px 0; /* Further reduced padding */
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(139, 69, 19, 0.3) rgba(139, 69, 19, 0.1);
+            /* Smooth transition for layout changes */
+            transition: width 0.3s ease, max-width 0.3s ease;
         }
 
-        .ielts-general-submenu.show {
+        /* Horizontally expanded layout when listening submenu is active */
+        .ielts-practice-submenu.expanded {
+            max-width: 950px; /* Expanded to accommodate both main menu and listening submenu */
+            width: max-content; /* Auto width when expanded */
+        }
+
+        /* Webkit scrollbar styling for better browser support */
+        .ielts-practice-submenu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .ielts-practice-submenu::-webkit-scrollbar-track {
+            background: rgba(139, 69, 19, 0.1);
+            border-radius: 3px;
+        }
+
+        .ielts-practice-submenu::-webkit-scrollbar-thumb {
+            background: rgba(139, 69, 19, 0.3);
+            border-radius: 3px;
+        }
+
+        .ielts-practice-submenu::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 69, 19, 0.5);
+        }
+
+        /* Nested submenu styles for Listening branching - Horizontal Expansion */
+        .nested-submenu-container {
+            position: relative;
+            /* Create horizontal flow when submenu is shown */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* When nested submenu is shown, create horizontal layout */
+        .nested-submenu-container.horizontal-layout {
+            flex-direction: row;
+            align-items: flex-start;
+        }
+
+        .submenu-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .submenu-arrow {
+            transition: transform 0.3s ease;
+            margin-left: auto;
+            font-size: 0.7rem;
+        }
+
+        .submenu-arrow.rotated {
+            transform: rotate(90deg);
+        }
+
+        .nested-submenu {
+            display: none; /* Hidden by default */
+            width: max-content; /* Fit content width exactly */
+            max-width: 650px; /* Horizontal layout width */
+            background: rgba(139, 69, 19, 0.05);
+            border: 1px solid rgba(139, 69, 19, 0.2);
+            border-radius: 6px;
+            margin-left: 8px; /* Space from main menu items */
+            margin-top: 4px;
+            padding: 8px; /* Padding for horizontal layout */
+            /* Remove absolute positioning - now inline */
+            position: static;
+            /* Smooth transition for showing/hiding */
+            transition: all 0.3s ease;
+        }
+
+        .nested-submenu.show {
+            display: block;
+        }
+
+        /* Prevent animation conflicts when switching between submenus */
+        .nested-submenu:not(.show) {
+            animation: none !important;
+        }
+
+        /* Slide in from right animation */
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Nested submenu scrollbar styling */
+        .nested-submenu::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .nested-submenu::-webkit-scrollbar-track {
+            background: rgba(139, 69, 19, 0.1);
+            border-radius: 3px;
+        }
+
+        .nested-submenu::-webkit-scrollbar-thumb {
+            background: rgba(139, 69, 19, 0.3);
+            border-radius: 3px;
+        }
+
+        .nested-submenu::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 69, 19, 0.5);
+        }
+
+        .nested-section {
+            display: inline-block; /* Horizontal layout */
+            vertical-align: top;
+            margin-right: 12px; /* Space between columns */
+            margin-bottom: 0;
+            min-width: 80px; /* Minimum width for each part */
+        }
+
+        .nested-section:last-child {
+            margin-right: 0;
+        }
+
+        .nested-section-title {
+            font-size: 0.75rem; /* Smaller font for horizontal layout */
+            color: #8b4513;
+            font-weight: bold;
+            margin-bottom: 4px;
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.15);
+            text-align: center; /* Center the part titles */
+            white-space: nowrap; /* Prevent wrapping */
+        }
+
+        .nested-section a {
+            display: block;
+            padding: 3px 6px; /* Compact padding for horizontal layout */
+            color: #555;
+            text-decoration: none;
+            font-size: 0.7rem; /* Smaller font for practices */
+            transition: all 0.2s ease;
+            border-radius: 3px;
+            margin: 1px 0;
+            text-align: center; /* Center the practice items */
+            white-space: nowrap; /* Prevent wrapping */
+        }
+
+        .nested-section a:hover {
+            background: rgba(139, 69, 19, 0.12);
+            color: #8b4513;
+            transform: translateX(4px);
+        }
+
+        /* Mobile adjustments for vertical nested submenu */
+        @media (max-width: 768px) {
+            .nested-submenu {
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                min-width: 85vw; /* Slightly smaller on mobile */
+                max-width: 85vw;
+                max-height: 65vh; /* More compact height */
+                margin-left: 0;
+                z-index: 1002;
+                padding: 8px; /* Slightly more padding on mobile for touch */
+            }
+
+            .nested-submenu.show {
+                animation: slideInCenter 0.3s ease;
+            }
+
+            @keyframes slideInCenter {
+                from {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.9);
+                }
+                to {
+                    opacity: 1;
+                    transform: translate(-50%, -50%) scale(1);
+                }
+            }
+        }
+
+        .ielts-practice-submenu.show {
             display: block;
             animation: slideDown 0.3s ease;
         }
 
-        .ielts-general-submenu a {
+        .ielts-practice-submenu .submenu-section {
+            margin-bottom: 5px; /* Further reduced spacing */
+        }
+
+        .ielts-practice-submenu .submenu-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .ielts-practice-submenu .submenu-section-title {
+            padding: 4px 12px 3px 12px; /* Reduced padding significantly */
+            font-size: 0.85rem; /* Smaller font */
+            color: #8b4513;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.1);
+            margin-bottom: 3px; /* Further reduced */
+        }
+
+        .ielts-practice-submenu .submenu-section-items a {
             display: block;
-            padding: 12px 16px;
+            padding: 6px 12px; /* Reduced padding and margins */
             color: #333;
             text-decoration: none;
             transition: all 0.3s ease;
             border-radius: 4px;
-            margin: 2px 8px;
-            font-size: 0.85rem;
+            margin: 1px 8px; /* Reduced horizontal margin */
+            font-size: 0.8rem; /* Slightly smaller */
         }
 
-        .ielts-general-submenu a:hover {
+        .ielts-practice-submenu .submenu-section-items a:hover {
             background: rgba(139, 69, 19, 0.1);
             color: #8b4513;
             transform: translateX(2px);
         }
 
-        .ielts-general-submenu a i {
+        .ielts-practice-submenu .submenu-section-items a i {
             margin-right: 8px;
             width: 12px;
         }
 
+        .ielts-practice-arrow {
+            transition: transform 0.3s ease;
+            margin-left: 0.3rem;
+        }
+
+        .ielts-practice-menu.active > a {
+            background: rgba(139, 69, 19, 0.1);
+            border-radius: 4px;
+        }
+
+        /* Mobile responsive styles for IELTS Practice submenu */
+        @media (max-width: 768px) {
+            .ielts-practice-submenu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                min-width: auto;
+                width: 100%;
+                max-height: 80vh;
+                overflow-y: auto;
+                overflow-x: hidden; /* Hide horizontal overflow on mobile */
+                border-radius: 0;
+                margin-top: 0;
+                padding: 12px 0; /* Reduced mobile padding */
+                /* Enhanced scrollbar for mobile */
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Mobile expanded state - same as normal since full width */
+            .ielts-practice-submenu.expanded {
+                min-width: auto;
+                max-width: none;
+            }
+
+            .ielts-practice-submenu .submenu-section-title {
+                font-size: 0.9rem; /* Smaller on mobile */
+                padding: 8px 16px 6px 16px; /* Reduced mobile padding */
+            }
+
+            .ielts-practice-submenu .submenu-section-items a {
+                padding: 10px 16px; /* Reduced mobile padding */
+                font-size: 0.85rem; /* Smaller font on mobile */
+            }
+
+            /* Mobile scrollbar styling */
+            .ielts-practice-submenu::-webkit-scrollbar {
+                width: 8px;
+            }
+        }
+
         /* Add active state for better feedback on all submenus */
-        .ielts-general-menu.active > a,
-        .ielts-menu.active > a,
+        .ielts-practice-menu.active > a,
         .celpip-menu.active > a,
         .celpip-ls-menu.active > a,
         .lingo-menu.active > a {
             background: rgba(139, 69, 19, 0.1);
             border-radius: 4px;
-        }
-
-        /* IELTS Submenu Styles */
-        .ielts-menu {
-            position: relative;
-        }
-
-        .ielts-submenu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            border-radius: 6px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-            min-width: 140px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            padding: 0.3rem 0;
-            margin-top: 0.3rem;
-        }
-
-        .ielts-submenu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .ielts-submenu a {
-            display: block;
-            padding: 0.5rem 0.8rem;
-            color: #3c2d1f;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border-radius: 0;
-            font-size: 0.85rem;
-        }
-
-        .ielts-submenu a:hover {
-            background: rgba(139, 69, 19, 0.1);
-            color: #8b4513;
-            transform: none;
-        }
-
-        .ielts-submenu a i {
-            margin-right: 0.4rem;
-            width: 14px;
-        }
-
-        /* IELTS arrow rotation */
-        .ielts-arrow {
-            transition: transform 0.3s ease;
-            margin-left: 0.3rem;
         }
 
         /* CELPIP Submenu Styles */
@@ -1788,40 +1995,38 @@
         .french-menu-header {
             background: linear-gradient(135deg, #8b4513, #d4af37);
             color: white;
-            padding: 1rem 1rem 0.8rem 1rem;
+            padding: 0.6rem 0.8rem 0.5rem 0.8rem; /* Reduced padding */
             text-align: center;
             position: relative;
             z-index: 2;
-            margin-top: 8px;
+            margin-top: 4px; /* Reduced from 8px */
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            min-height: 60px;
+            min-height: 45px; /* Reduced from 60px */
         }
 
-
-
         .french-menu-bookmark-title {
-            font-size: 0.9rem;
+            font-size: 0.85rem; /* Slightly smaller */
             font-weight: 500;
             opacity: 0.8;
             margin-top: auto;
-            padding-top: 1rem;
+            padding-top: 0.6rem; /* Reduced from 1rem */
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .french-menu-content {
-            padding: 1.5rem 1rem 1rem 1rem;
+            padding: 0.8rem 0.8rem 0.5rem 0.8rem; /* Reduced padding significantly */
             position: relative;
             z-index: 2;
         }
 
         .french-menu-item {
             display: block;
-            padding: 0.8rem;
-            margin-bottom: 0.5rem;
+            padding: 0.5rem 0.6rem; /* Reduced padding from 0.8rem */
+            margin-bottom: 0.3rem; /* Reduced from 0.5rem */
             background: rgba(139, 69, 19, 0.05);
-            border-radius: 8px;
+            border-radius: 6px; /* Slightly smaller radius */
             text-decoration: none;
             color: #333;
             transition: all 0.3s ease;
@@ -1980,38 +2185,38 @@
         .english-menu-header {
             background: linear-gradient(135deg, #8b4513, #d4af37);
             color: white;
-            padding: 1rem 1rem 0.8rem 1rem;
+            padding: 0.6rem 0.8rem 0.5rem 0.8rem; /* Reduced padding */
             text-align: center;
             position: relative;
             z-index: 2;
-            margin-top: 8px;
+            margin-top: 4px; /* Reduced from 8px */
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            min-height: 60px;
+            min-height: 45px; /* Reduced from 60px */
         }
 
         .english-menu-bookmark-title {
-            font-size: 0.9rem;
+            font-size: 0.85rem; /* Slightly smaller */
             font-weight: 500;
             opacity: 0.8;
             margin-top: auto;
-            padding-top: 1rem;
+            padding-top: 0.6rem; /* Reduced from 1rem */
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .english-menu-content {
-            padding: 1.5rem 1rem 1rem 1rem;
+            padding: 0.8rem 0.8rem 0.5rem 0.8rem; /* Reduced padding significantly */
             position: relative;
             z-index: 2;
         }
 
         .english-menu-item {
             display: block;
-            padding: 0.8rem;
-            margin-bottom: 0.5rem;
+            padding: 0.5rem 0.6rem; /* Reduced padding from 0.8rem */
+            margin-bottom: 0.3rem; /* Reduced from 0.5rem */
             background: rgba(139, 69, 19, 0.05);
-            border-radius: 8px;
+            border-radius: 6px; /* Slightly smaller radius */
             text-decoration: none;
             color: #333;
             transition: all 0.3s ease;
@@ -2136,15 +2341,15 @@
         .tamil-menu-header {
             background: linear-gradient(135deg, #8b4513, #d4af37);
             color: white;
-            padding: 1rem 1rem 0.8rem 1rem;
+            padding: 0.6rem 0.8rem 0.5rem 0.8rem; /* Reduced padding */
             text-align: center;
             position: relative;
             z-index: 2;
-            margin-top: 8px;
+            margin-top: 4px; /* Reduced from 8px */
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            min-height: 60px;
+            min-height: 45px; /* Reduced from 60px */
         }
 
         .tamil-menu-bookmark-title {
@@ -2157,17 +2362,17 @@
         }
 
         .tamil-menu-content {
-            padding: 1.5rem 1rem 1rem 1rem;
+            padding: 0.8rem 0.8rem 0.5rem 0.8rem; /* Reduced padding significantly */
             position: relative;
             z-index: 2;
         }
 
         .tamil-menu-item {
             display: block;
-            padding: 0.8rem;
-            margin-bottom: 0.5rem;
+            padding: 0.5rem 0.6rem; /* Reduced padding from 0.8rem */
+            margin-bottom: 0.3rem; /* Reduced from 0.5rem */
             background: rgba(139, 69, 19, 0.05);
-            border-radius: 8px;
+            border-radius: 6px; /* Slightly smaller radius */
             text-decoration: none;
             color: #333;
             transition: all 0.3s ease;
@@ -2815,26 +3020,114 @@
             <div class="nav-bottom-row">
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="#home" onclick="closeMobileMenuOnLinkClick(); selectHome();"><i class="fas fa-home"></i> Home</a></li>
-                    <li class="ielts-general-menu" onmouseenter="cancelSubmenuTimeout('ieltsGeneral')" onmouseleave="startSubmenuTimeout('ieltsGeneral')">
-                        <a href="#ielts-general" onclick="toggleIeltsGeneralSubmenu(event)"><i class="fas fa-globe"></i> IELTS General <i class="fas fa-chevron-down ielts-general-arrow"></i></a>
-                        <div class="ielts-general-submenu" id="ieltsGeneralSubmenu" onmouseenter="cancelSubmenuTimeout('ieltsGeneral')" onmouseleave="startSubmenuTimeout('ieltsGeneral')">
-                            <a href="#ielts-general-writing" onclick="selectIeltsGeneralOption('Writing')"><i class="fas fa-edit"></i> Writing</a>
-                            <a href="#ielts-general-reading" onclick="selectIeltsGeneralOption('Reading')"><i class="fas fa-book-open"></i> Reading</a>
-                            <a href="#ielts-general-listening" onclick="selectIeltsGeneralOption('Listening')"><i class="fas fa-headphones"></i> Listening</a>
-                            <a href="#ielts-general-speaking" onclick="selectIeltsGeneralOption('Speaking')"><i class="fas fa-microphone"></i> Speaking</a>
-                            <a href="#ielts-general-mock" onclick="selectIeltsGeneralOption('Mock Tests')"><i class="fas fa-clipboard-list"></i> Mock Tests</a>
+                    <li class="ielts-practice-menu" onmouseenter="cancelSubmenuTimeout('ieltsPractice')" onmouseleave="startSubmenuTimeout('ieltsPractice')">
+                        <a href="#ielts-practice" onclick="toggleIeltsPracticeSubmenu(event)"><i class="fas fa-clipboard-check"></i> IELTS Practice <i class="fas fa-chevron-down ielts-practice-arrow"></i></a>
+                        <div class="ielts-practice-submenu" id="ieltsPracticeSubmenu" onmouseenter="cancelSubmenuTimeout('ieltsPractice')" onmouseleave="startSubmenuTimeout('ieltsPractice')">
+                            <!-- IELTS General Section -->
+                            <div class="submenu-section">
+                                <div class="submenu-section-title"><strong>IELTS General</strong></div>
+                                <div class="submenu-section-items">
+                                    <!-- Listening with nested submenu -->
+                                    <div class="nested-submenu-container">
+                                        <a href="#ielts-general-listening-practice" onclick="toggleListeningSubmenu(event, 'General')" class="submenu-toggle">
+                                            <i class="fas fa-headphones"></i> Listening 
+                                            <i class="fas fa-chevron-right submenu-arrow" id="general-listening-arrow"></i>
+                                        </a>
+                                        <div class="nested-submenu" id="generalListeningSubmenu">
+                                            <div class="nested-section">
+                                                <div class="nested-section-title"><strong>Part 1 Conversation</strong></div>
+                                                <a href="#general-part1-practice1" onclick="selectListeningPractice('General', 'Part 1', 'Practice 1')">Practice 1</a>
+                                                <a href="#general-part1-practice2" onclick="selectListeningPractice('General', 'Part 1', 'Practice 2')">Practice 2</a>
+                                                <a href="#general-part1-practice3" onclick="selectListeningPractice('General', 'Part 1', 'Practice 3')">Practice 3</a>
+                                                <a href="#general-part1-practice4" onclick="selectListeningPractice('General', 'Part 1', 'Practice 4')">Practice 4</a>
+                                                <a href="#general-part1-practice5" onclick="selectListeningPractice('General', 'Part 1', 'Practice 5')">Practice 5</a>
+                                            </div>
+                                            <div class="nested-section">
+                                                <div class="nested-section-title"><strong>Part 2 Monologue</strong></div>
+                                                <a href="#general-part2-practice1" onclick="selectListeningPractice('General', 'Part 2', 'Practice 1')">Practice 1</a>
+                                                <a href="#general-part2-practice2" onclick="selectListeningPractice('General', 'Part 2', 'Practice 2')">Practice 2</a>
+                                                <a href="#general-part2-practice3" onclick="selectListeningPractice('General', 'Part 2', 'Practice 3')">Practice 3</a>
+                                                <a href="#general-part2-practice4" onclick="selectListeningPractice('General', 'Part 2', 'Practice 4')">Practice 4</a>
+                                                <a href="#general-part2-practice5" onclick="selectListeningPractice('General', 'Part 2', 'Practice 5')">Practice 5</a>
+                                            </div>
+                                            <div class="nested-section">
+                                                <div class="nested-section-title"><strong>Part 3 Discussion</strong></div>
+                                                <a href="#general-part3-practice1" onclick="selectListeningPractice('General', 'Part 3', 'Practice 1')">Practice 1</a>
+                                                <a href="#general-part3-practice2" onclick="selectListeningPractice('General', 'Part 3', 'Practice 2')">Practice 2</a>
+                                                <a href="#general-part3-practice3" onclick="selectListeningPractice('General', 'Part 3', 'Practice 3')">Practice 3</a>
+                                                <a href="#general-part3-practice4" onclick="selectListeningPractice('General', 'Part 3', 'Practice 4')">Practice 4</a>
+                                                <a href="#general-part3-practice5" onclick="selectListeningPractice('General', 'Part 3', 'Practice 5')">Practice 5</a>
+                                            </div>
+                                            <div class="nested-section">
+                                                <div class="nested-section-title"><strong>Part 4 Lecture</strong></div>
+                                                <a href="#general-part4-practice1" onclick="selectListeningPractice('General', 'Part 4', 'Practice 1')">Practice 1</a>
+                                                <a href="#general-part4-practice2" onclick="selectListeningPractice('General', 'Part 4', 'Practice 2')">Practice 2</a>
+                                                <a href="#general-part4-practice3" onclick="selectListeningPractice('General', 'Part 4', 'Practice 3')">Practice 3</a>
+                                                <a href="#general-part4-practice4" onclick="selectListeningPractice('General', 'Part 4', 'Practice 4')">Practice 4</a>
+                                                <a href="#general-part4-practice5" onclick="selectListeningPractice('General', 'Part 4', 'Practice 5')">Practice 5</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="#ielts-general-reading-practice" onclick="selectIeltsPracticeOption('General', 'Reading')"><i class="fas fa-book-open"></i> Reading</a>
+                                    <a href="#ielts-general-writing-practice" onclick="selectIeltsPracticeOption('General', 'Writing')"><i class="fas fa-edit"></i> Writing</a>
+                                    <a href="#ielts-general-speaking-practice" onclick="selectIeltsPracticeOption('General', 'Speaking')"><i class="fas fa-microphone"></i> Speaking</a>
+                                    <a href="#ielts-general-mock-test-practice" onclick="selectIeltsPracticeOption('General', 'Mock Test')"><i class="fas fa-clipboard-list"></i> Mock Test</a>
+                                </div>
+                            </div>
+                            <!-- IELTS Academic Section -->
+                            <div class="submenu-section">
+                                <div class="submenu-section-title"><strong>IELTS Academic</strong></div>
+                                <div class="submenu-section-items">
+                                    <!-- Listening with nested submenu -->
+                                    <div class="nested-submenu-container">
+                                        <a href="#ielts-academic-listening-practice" onclick="toggleListeningSubmenu(event, 'Academic')" class="submenu-toggle">
+                                            <i class="fas fa-headphones"></i> Listening 
+                                            <i class="fas fa-chevron-right submenu-arrow" id="academic-listening-arrow"></i>
+                                        </a>
+                                        <div class="nested-submenu" id="academicListeningSubmenu">
+                                            <div class="nested-section">
+                                                <div class="nested-section-title"><strong>Part 1 Conversation</strong></div>
+                                                <a href="#academic-part1-practice1" onclick="selectListeningPractice('Academic', 'Part 1', 'Practice 1')">Practice 1</a>
+                                                <a href="#academic-part1-practice2" onclick="selectListeningPractice('Academic', 'Part 1', 'Practice 2')">Practice 2</a>
+                                                <a href="#academic-part1-practice3" onclick="selectListeningPractice('Academic', 'Part 1', 'Practice 3')">Practice 3</a>
+                                                <a href="#academic-part1-practice4" onclick="selectListeningPractice('Academic', 'Part 1', 'Practice 4')">Practice 4</a>
+                                                <a href="#academic-part1-practice5" onclick="selectListeningPractice('Academic', 'Part 1', 'Practice 5')">Practice 5</a>
+                                            </div>
+                                            <div class="nested-section">
+                                                <div class="nested-section-title"><strong>Part 2 Monologue</strong></div>
+                                                <a href="#academic-part2-practice1" onclick="selectListeningPractice('Academic', 'Part 2', 'Practice 1')">Practice 1</a>
+                                                <a href="#academic-part2-practice2" onclick="selectListeningPractice('Academic', 'Part 2', 'Practice 2')">Practice 2</a>
+                                                <a href="#academic-part2-practice3" onclick="selectListeningPractice('Academic', 'Part 2', 'Practice 3')">Practice 3</a>
+                                                <a href="#academic-part2-practice4" onclick="selectListeningPractice('Academic', 'Part 2', 'Practice 4')">Practice 4</a>
+                                                <a href="#academic-part2-practice5" onclick="selectListeningPractice('Academic', 'Part 2', 'Practice 5')">Practice 5</a>
+                                            </div>
+                                            <div class="nested-section">
+                                                <div class="nested-section-title"><strong>Part 3 Discussion</strong></div>
+                                                <a href="#academic-part3-practice1" onclick="selectListeningPractice('Academic', 'Part 3', 'Practice 1')">Practice 1</a>
+                                                <a href="#academic-part3-practice2" onclick="selectListeningPractice('Academic', 'Part 3', 'Practice 2')">Practice 2</a>
+                                                <a href="#academic-part3-practice3" onclick="selectListeningPractice('Academic', 'Part 3', 'Practice 3')">Practice 3</a>
+                                                <a href="#academic-part3-practice4" onclick="selectListeningPractice('Academic', 'Part 3', 'Practice 4')">Practice 4</a>
+                                                <a href="#academic-part3-practice5" onclick="selectListeningPractice('Academic', 'Part 3', 'Practice 5')">Practice 5</a>
+                                            </div>
+                                            <div class="nested-section">
+                                                <div class="nested-section-title"><strong>Part 4 Lecture</strong></div>
+                                                <a href="#academic-part4-practice1" onclick="selectListeningPractice('Academic', 'Part 4', 'Practice 1')">Practice 1</a>
+                                                <a href="#academic-part4-practice2" onclick="selectListeningPractice('Academic', 'Part 4', 'Practice 2')">Practice 2</a>
+                                                <a href="#academic-part4-practice3" onclick="selectListeningPractice('Academic', 'Part 4', 'Practice 3')">Practice 3</a>
+                                                <a href="#academic-part4-practice4" onclick="selectListeningPractice('Academic', 'Part 4', 'Practice 4')">Practice 4</a>
+                                                <a href="#academic-part4-practice5" onclick="selectListeningPractice('Academic', 'Part 4', 'Practice 5')">Practice 5</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="#ielts-academic-reading-practice" onclick="selectIeltsPracticeOption('Academic', 'Reading')"><i class="fas fa-book-open"></i> Reading</a>
+                                    <a href="#ielts-academic-writing-practice" onclick="selectIeltsPracticeOption('Academic', 'Writing')"><i class="fas fa-edit"></i> Writing</a>
+                                    <a href="#ielts-academic-speaking-practice" onclick="selectIeltsPracticeOption('Academic', 'Speaking')"><i class="fas fa-microphone"></i> Speaking</a>
+                                    <a href="#ielts-academic-mock-test-practice" onclick="selectIeltsPracticeOption('Academic', 'Mock Test')"><i class="fas fa-clipboard-list"></i> Mock Test</a>
+                                </div>
+                            </div>
                         </div>
                     </li>
-                    <li class="ielts-menu" onmouseenter="cancelSubmenuTimeout('ielts')" onmouseleave="startSubmenuTimeout('ielts')">
-                        <a href="#ielts" onclick="toggleIeltsSubmenu(event)"><i class="fas fa-graduation-cap"></i> IELTS Academic <i class="fas fa-chevron-down ielts-arrow"></i></a>
-                        <div class="ielts-submenu" id="ieltsSubmenu" onmouseenter="cancelSubmenuTimeout('ielts')" onmouseleave="startSubmenuTimeout('ielts')">
-                            <a href="#ielts-writing" onclick="selectIeltsOption('Writing')"><i class="fas fa-edit"></i> Writing</a>
-                            <a href="#ielts-reading" onclick="selectIeltsOption('Reading')"><i class="fas fa-book-open"></i> Reading</a>
-                            <a href="#ielts-listening" onclick="selectIeltsOption('Listening')"><i class="fas fa-headphones"></i> Listening</a>
-                            <a href="#ielts-speaking" onclick="selectIeltsOption('Speaking')"><i class="fas fa-microphone"></i> Speaking</a>
-                            <a href="#ielts-mock" onclick="selectIeltsOption('Mock Tests')"><i class="fas fa-clipboard-list"></i> Mock Tests</a>
-                        </div>
-                    </li>
+
                     <li class="celpip-menu" onmouseenter="cancelSubmenuTimeout('celpip')" onmouseleave="startSubmenuTimeout('celpip')">
                         <a href="#celpip" onclick="toggleCelpipSubmenu(event)"><i class="fas fa-certificate"></i> CELPIP General <i class="fas fa-chevron-down celpip-arrow"></i></a>
                         <div class="celpip-submenu" id="celpipSubmenu" onmouseenter="cancelSubmenuTimeout('celpip')" onmouseleave="startSubmenuTimeout('celpip')">
@@ -4777,14 +5070,7 @@
                     submenuId = 'lingoSubmenu';
                     parentClass = '.lingo-menu';
                     break;
-                case 'ieltsGeneral':
-                    submenuId = 'ieltsGeneralSubmenu';
-                    parentClass = '.ielts-general-menu';
-                    break;
-                case 'ielts':
-                    submenuId = 'ieltsSubmenu';
-                    parentClass = '.ielts-menu';
-                    break;
+
                 case 'celpip':
                     submenuId = 'celpipSubmenu';
                     parentClass = '.celpip-menu';
@@ -4792,6 +5078,10 @@
                 case 'celpipLs':
                     submenuId = 'celpipLsSubmenu';
                     parentClass = '.celpip-ls-menu';
+                    break;
+                case 'ieltsPractice':
+                    submenuId = 'ieltsPracticeSubmenu';
+                    parentClass = '.ielts-practice-menu';
                     break;
                 default:
                     return;
@@ -5213,18 +5503,16 @@
         function closeAllOtherSubmenus(currentMenu) {
             const submenus = [
                 { id: 'lingoSubmenu', parent: '.lingo-menu' },
-                { id: 'ieltsSubmenu', parent: '.ielts-menu' },
                 { id: 'celpipSubmenu', parent: '.celpip-menu' },
                 { id: 'celpipLsSubmenu', parent: '.celpip-ls-menu' },
-                { id: 'ieltsGeneralSubmenu', parent: '.ielts-general-menu' }
+                { id: 'ieltsPracticeSubmenu', parent: '.ielts-practice-menu' }
             ];
 
             submenus.forEach(menu => {
-                if ((currentMenu === 'ielts-general' && menu.id === 'ieltsGeneralSubmenu') ||
-                    (currentMenu === 'ielts' && menu.id === 'ieltsSubmenu') ||
-                    (currentMenu === 'celpip' && menu.id === 'celpipSubmenu') ||
+                if ((currentMenu === 'celpip' && menu.id === 'celpipSubmenu') ||
                     (currentMenu === 'celpip-ls' && menu.id === 'celpipLsSubmenu') ||
-                    (currentMenu === 'lingo' && menu.id === 'lingoSubmenu')) {
+                    (currentMenu === 'lingo' && menu.id === 'lingoSubmenu') ||
+                    (currentMenu === 'ielts-practice' && menu.id === 'ieltsPracticeSubmenu')) {
                     return; // Skip closing the current menu
                 }
 
@@ -5237,147 +5525,242 @@
             });
         }
 
-        // IELTS General Submenu Functions
-        function toggleIeltsGeneralSubmenu(event) {
+        // IELTS Practice Submenu Functions
+        function toggleIeltsPracticeSubmenu(event) {
             event.preventDefault();
             event.stopPropagation();
             
-            const submenu = document.getElementById('ieltsGeneralSubmenu');
-            const menuParent = submenu.closest('.ielts-general-menu');
+            const submenu = document.getElementById('ieltsPracticeSubmenu');
+            const menuParent = submenu.closest('.ielts-practice-menu');
             
             // Cancel any pending timeout for this menu
             if (window.cancelSubmenuTimeout) {
-                window.cancelSubmenuTimeout('ieltsGeneral');
+                window.cancelSubmenuTimeout('ieltsPractice');
             }
             
             // Close other submenus first
-            closeAllOtherSubmenus('ielts-general');
+            closeAllOtherSubmenus('ielts-practice');
             
-            // Toggle IELTS General submenu
+            // Toggle IELTS Practice submenu
             submenu.classList.toggle('show');
             menuParent.classList.toggle('active');
-        }
-        
-
-        
-
-        
-        // Test function to check file paths (for debugging)
-        function testFilePaths() {
-            const testPaths = [
-                'Guruvammal-Database/IELTS/General/Writing/GA_IELTS_ESSAY_Writting.html',
-                'Guruvammal-Database/IELTS/General/Writing/GA_IELTS_LETTER_Writting.html'
-            ];
             
-            testPaths.forEach(path => {
-                fetch(path)
-                    .then(response => {
-                        console.log(`✅ File exists: ${path} (Status: ${response.status})`);
-                    })
-                    .catch(error => {
-                        console.log(`❌ File not accessible: ${path} (Error: ${error.message})`);
-                    });
-            });
-        }
-
-        // IELTS General Option Selection Function
-        function selectIeltsGeneralOption(option) {
-            // Close the submenu first
-            const submenu = document.getElementById('ieltsGeneralSubmenu');
-            const menuParent = submenu.closest('.ielts-general-menu');
-            submenu.classList.remove('show');
-            menuParent.classList.remove('active');
-            
-            // Handle different IELTS General skill options
-            switch(option) {
-                case 'Writing':
-                    console.log('✍️ Loading IELTS General Writing...');
-                    // Navigate directly to Essay Writing page
-                    window.location.href = 'Guruvammal-Database/IELTS/General/Writing/GA_IELTS_ESSAY_Writting.html';
-                    break;
-                case 'Reading':
-                    console.log('📖 Loading IELTS General Reading...');
-                    window.location.href = 'Guruvammal-Database/IELTS/General/Reading/GA_TEMPLATE.html';
-                    break;
-                case 'Listening':
-                    console.log('🎧 Loading IELTS General Listening...');
-                    // Load the main listening test (Part 1)
-                    window.location.href = 'Guruvammal-Database/IELTS/General/Listening/IELTS_G_Listening_Part1.html';
-                    break;
-                case 'Speaking':
-                    console.log('🎤 Loading IELTS General Speaking...');
-                    window.location.href = 'Guruvammal-Database/IELTS/General/Speaking/GA_TEMPLATE.html';
-                    break;
-                case 'Mock Tests':
-                    console.log('📊 Loading IELTS General Mock Tests...');
-                    // For now, redirect to the main listening test as a mock test
-                    // You can create a dedicated mock test page later
-                    window.location.href = 'Guruvammal-Database/IELTS/General/Listening/IELTS_G_Listening_Part1.html';
-                    break;
-                default:
-                    alert(`IELTS General ${option} will be available soon!`);
-                    return;
+            // Start 3-second auto-hide timer when submenu is opened
+            if (submenu.classList.contains('show')) {
+                console.log('🕒 IELTS Practice submenu will auto-hide in 3 seconds');
+                if (window.startSubmenuTimeout) {
+                    window.startSubmenuTimeout('ieltsPractice');
+                }
+                
+                // Add click-outside listener when submenu opens
+                setTimeout(() => {
+                    document.addEventListener('click', closeIeltsPracticeSubmenuOnClickOutside);
+                }, 10);
+            } else {
+                // Remove click-outside listener when submenu closes
+                document.removeEventListener('click', closeIeltsPracticeSubmenuOnClickOutside);
             }
         }
 
-        // IELTS Submenu Functions
-        function toggleIeltsSubmenu(event) {
+        // Click outside handler for IELTS Practice submenu
+        function closeIeltsPracticeSubmenuOnClickOutside(event) {
+            const submenu = document.getElementById('ieltsPracticeSubmenu');
+            const menuParent = submenu.closest('.ielts-practice-menu');
+            
+            // Check if click is outside the submenu and parent menu (including nested submenus)
+            const generalNested = document.getElementById('generalListeningSubmenu');
+            const academicNested = document.getElementById('academicListeningSubmenu');
+            
+            let clickInsideNestedSubmenu = false;
+            if (generalNested && generalNested.contains(event.target)) clickInsideNestedSubmenu = true;
+            if (academicNested && academicNested.contains(event.target)) clickInsideNestedSubmenu = true;
+            
+            if (!menuParent.contains(event.target) && !clickInsideNestedSubmenu) {
+                submenu.classList.remove('show');
+                submenu.classList.remove('expanded'); // Remove expanded state
+                menuParent.classList.remove('active');
+                
+                // Close any open nested submenus
+                if (generalNested) generalNested.classList.remove('show');
+                if (academicNested) academicNested.classList.remove('show');
+                
+                // Reset arrows
+                const generalArrow = document.getElementById('general-listening-arrow');
+                const academicArrow = document.getElementById('academic-listening-arrow');
+                if (generalArrow) generalArrow.classList.remove('rotated');
+                if (academicArrow) academicArrow.classList.remove('rotated');
+                
+                document.removeEventListener('click', closeIeltsPracticeSubmenuOnClickOutside);
+                
+                // Cancel auto-hide timer since we're closing manually
+                if (window.cancelSubmenuTimeout) {
+                    window.cancelSubmenuTimeout('ieltsPractice');
+                }
+                
+                console.log('🖱️ IELTS Practice submenu closed by clicking outside');
+            }
+        }
+
+        // Toggle Listening nested submenu
+        function toggleListeningSubmenu(event, type) {
             event.preventDefault();
             event.stopPropagation();
             
-            const submenu = document.getElementById('ieltsSubmenu');
-            const menuParent = submenu.closest('.ielts-menu');
+            const submenuId = type === 'General' ? 'generalListeningSubmenu' : 'academicListeningSubmenu';
+            const arrowId = type === 'General' ? 'general-listening-arrow' : 'academic-listening-arrow';
             
-            // Cancel any pending timeout for this menu
-            if (window.cancelSubmenuTimeout) {
-                window.cancelSubmenuTimeout('ielts');
+            const nestedSubmenu = document.getElementById(submenuId);
+            const arrow = document.getElementById(arrowId);
+            const mainSubmenu = document.getElementById('ieltsPracticeSubmenu');
+            
+            // Close other nested submenu if open
+            const otherSubmenuId = type === 'General' ? 'academicListeningSubmenu' : 'generalListeningSubmenu';
+            const otherArrowId = type === 'General' ? 'academic-listening-arrow' : 'general-listening-arrow';
+            const otherNestedSubmenu = document.getElementById(otherSubmenuId);
+            const otherArrow = document.getElementById(otherArrowId);
+            
+            // Check if we're opening and another is already open
+            const isOpening = !nestedSubmenu.classList.contains('show');
+            const otherIsOpen = otherNestedSubmenu && otherNestedSubmenu.classList.contains('show');
+            
+            if (otherIsOpen) {
+                // Close other submenu immediately without animation
+                otherNestedSubmenu.style.animation = 'none';
+                otherNestedSubmenu.classList.remove('show');
+                if (otherArrow) otherArrow.classList.remove('rotated');
+                
+                // Reset other submenu's horizontal layout
+                const otherContainer = otherNestedSubmenu.closest('.nested-submenu-container');
+                if (otherContainer) {
+                    otherContainer.classList.remove('horizontal-layout');
+                }
+                
+                // Force reflow to ensure the style is applied
+                otherNestedSubmenu.offsetHeight;
+                
+                // Re-enable animation after a brief delay
+                setTimeout(() => {
+                    if (otherNestedSubmenu) {
+                        otherNestedSubmenu.style.animation = '';
+                    }
+                }, 50);
             }
             
-            // Close other submenus first
-            closeAllOtherSubmenus('ielts');
+            if (isOpening) {
+                // Open current submenu with slight delay if another was just closed
+                const delay = otherIsOpen ? 100 : 0;
+                
+                setTimeout(() => {
+                    // Enable horizontal layout
+                    const container = nestedSubmenu.closest('.nested-submenu-container');
+                    if (container) {
+                        container.classList.add('horizontal-layout');
+                    }
+                    
+                    nestedSubmenu.classList.add('show');
+                    arrow.classList.add('rotated');
+                    mainSubmenu.classList.add('expanded');
+                    console.log(`🎧 ${type} Listening submenu opened - Horizontal layout activated`);
+                }, delay);
+                
+            } else {
+                // Close current submenu and reset horizontal layout
+                nestedSubmenu.classList.remove('show');
+                arrow.classList.remove('rotated');
+                
+                // Disable horizontal layout
+                const container = nestedSubmenu.closest('.nested-submenu-container');
+                if (container) {
+                    container.classList.remove('horizontal-layout');
+                }
+                
+                // Check if any nested submenu is still open
+                setTimeout(() => {
+                    const generalSubmenu = document.getElementById('generalListeningSubmenu');
+                    const academicSubmenu = document.getElementById('academicListeningSubmenu');
+                    const anyNestedOpen = (generalSubmenu && generalSubmenu.classList.contains('show')) || 
+                                        (academicSubmenu && academicSubmenu.classList.contains('show'));
+                    
+                    if (!anyNestedOpen) {
+                        mainSubmenu.classList.remove('expanded');
+                        console.log(`🎧 ${type} Listening submenu closed - Main menu contracted`);
+                    }
+                }, 150);
+            }
             
-            // Toggle IELTS submenu
-            submenu.classList.toggle('show');
-            menuParent.classList.toggle('active');
+            console.log(`🎧 ${type} Listening submenu ${isOpening ? 'opening' : 'closing'}`);
         }
-        
 
-        
-        // IELTS Option Selection Function
-        function selectIeltsOption(option) {
+        // Handle Listening practice selection
+        function selectListeningPractice(type, part, practice) {
+            console.log(`✅ IELTS ${type} ${part} ${practice} selected`);
+            
+            // Close all submenus
+            const mainSubmenu = document.getElementById('ieltsPracticeSubmenu');
+            const menuParent = mainSubmenu.closest('.ielts-practice-menu');
+            mainSubmenu.classList.remove('show');
+            mainSubmenu.classList.remove('expanded'); // Remove expanded state
+            menuParent.classList.remove('active');
+            
+            // Close nested submenus
+            const generalNested = document.getElementById('generalListeningSubmenu');
+            const academicNested = document.getElementById('academicListeningSubmenu');
+            if (generalNested) generalNested.classList.remove('show');
+            if (academicNested) academicNested.classList.remove('show');
+            
+            // Reset arrows
+            const generalArrow = document.getElementById('general-listening-arrow');
+            const academicArrow = document.getElementById('academic-listening-arrow');
+            if (generalArrow) generalArrow.classList.remove('rotated');
+            if (academicArrow) academicArrow.classList.remove('rotated');
+            
+            // Remove click-outside listener
+            document.removeEventListener('click', closeIeltsPracticeSubmenuOnClickOutside);
+            
+            // Cancel auto-hide timer
+            if (window.cancelSubmenuTimeout) {
+                window.cancelSubmenuTimeout('ieltsPractice');
+            }
+            
+            // Placeholder for future navigation
+            console.log(`🔗 Future navigation: IELTS ${type} ${part} ${practice} page will be linked here`);
+            alert(`IELTS ${type} ${part} ${practice} will be available soon!\n\nThis will be linked to a specific listening practice page.`);
+        }
+
+        // IELTS Practice Option Selection Function
+        function selectIeltsPracticeOption(type, skill) {
+            console.log(`✅ IELTS ${type} ${skill} selected`);
+            
             // Close the submenu first
-            const submenu = document.getElementById('ieltsSubmenu');
-            const menuParent = submenu.closest('.ielts-menu');
+            const submenu = document.getElementById('ieltsPracticeSubmenu');
+            const menuParent = submenu.closest('.ielts-practice-menu');
             submenu.classList.remove('show');
             menuParent.classList.remove('active');
             
-            // Handle different IELTS Academic skill options
-            switch(option) {
-                case 'Writing':
-                    console.log('✍️ Loading IELTS Academic Writing...');
-                    alert('📝 IELTS Academic Writing will be available soon!');
-                    break;
-                case 'Reading':
-                    console.log('📖 Loading IELTS Academic Reading...');
-                    alert('📚 IELTS Academic Reading will be available soon!');
-                    break;
-                case 'Listening':
-                    console.log('🎧 Loading IELTS Academic Listening...');
-                    alert('🎧 IELTS Academic Listening will be available soon!');
-                    break;
-                case 'Speaking':
-                    console.log('🎤 Loading IELTS Academic Speaking...');
-                    alert('🗣️ IELTS Academic Speaking will be available soon!');
-                    break;
-                case 'Mock Tests':
-                    console.log('📊 Loading IELTS Academic Mock Tests...');
-                    alert('📋 IELTS Academic Mock Tests will be available soon!');
-                    break;
-                default:
-                    alert(`IELTS Academic ${option} will be available soon!`);
-                    return;
+            // Remove click-outside listener when option is selected
+            document.removeEventListener('click', closeIeltsPracticeSubmenuOnClickOutside);
+            
+            // Cancel auto-hide timer since we're closing the menu
+            if (window.cancelSubmenuTimeout) {
+                window.cancelSubmenuTimeout('ieltsPractice');
             }
+            
+            // Placeholder for future navigation - no automatic routing
+            console.log(`🔗 Future navigation: ${type} ${skill} page will be linked here`);
+            alert(`${type} ${skill} page will be available soon!\n\nThis will be linked to a specific HTML page or create another branching submenu.`);
         }
+
+
+        
+
+        
+
+        
+
+
+
+
+
 
         // CELPIP Submenu Functions
         function toggleCelpipSubmenu(event) {
