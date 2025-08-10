@@ -3382,7 +3382,25 @@
                                 </div>
                             </div>
                             <a href="#english"><i class="fas fa-flag"></i> English</a>
-                            <a href="#tamil"><i class="fas fa-flag"></i> Tamil</a>
+                            <!-- Tamil with Branching Submenu -->
+                            <div class="nested-submenu-container">
+                                <a href="#tamil-menu" onclick="toggleTamilLingoSubmenu(event)" class="submenu-toggle">
+                                    <i class="fas fa-flag"></i> Tamil
+                                    <i class="fas fa-chevron-right submenu-arrow" id="tamil-lingo-arrow"></i>
+                                </a>
+                                <div class="branching-submenu" id="tamilLingoSubmenu">
+                                    <div class="branching-section">
+                                        <div class="branching-section-title"><strong>Basics</strong></div>
+                                        <a href="#alphabets" onclick="selectTamilSection('alphabets')">🔤 Alphabets</a>
+                                        <a href="#numbers" onclick="selectTamilSection('numbers')">🔢 Numbers</a>
+                                    </div>
+                                    <div class="branching-section">
+                                        <div class="branching-section-title"><strong>Communication</strong></div>
+                                        <a href="#greetings" onclick="selectTamilSection('greetings')">👋 Greetings</a>
+                                        <a href="#vocabulary" onclick="selectTamilSection('vocabulary')">📖 Vocabulary</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </li>
 
@@ -5460,6 +5478,85 @@
             } else {
                 console.warn(`❌ Unknown French section: ${sectionType}`);
                 alert(`French ${sectionType} section will be available soon!`);
+            }
+        }
+
+        // Tamil Lingo Submenu Toggle Function
+        function toggleTamilLingoSubmenu(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const submenuId = 'tamilLingoSubmenu';
+            const arrowId = 'tamil-lingo-arrow';
+            
+            const branchingSubmenu = document.getElementById(submenuId);
+            const arrow = document.getElementById(arrowId);
+            const lingoSubmenu = document.getElementById('lingoSubmenu');
+            
+            const isCurrentlyOpen = branchingSubmenu.classList.contains('show');
+            
+            if (isCurrentlyOpen) {
+                // CLOSING: Just close this submenu
+                branchingSubmenu.classList.remove('show');
+                arrow.classList.remove('rotated');
+                const container = branchingSubmenu.closest('.nested-submenu-container');
+                if (container) {
+                    container.classList.remove('horizontal-layout');
+                }
+                console.log('🇮🇳 Tamil Lingo submenu closed');
+            } else {
+                // OPENING: Close all others first, then open this one
+                closeAllSubmenusGlobally(submenuId);
+                
+                // Ensure the Lingo main submenu is open
+                if (!lingoSubmenu.classList.contains('show')) {
+                    lingoSubmenu.classList.add('show');
+                    const menuParent = lingoSubmenu.closest('.lingo-menu');
+                    if (menuParent) {
+                        menuParent.classList.add('active');
+                    }
+                }
+                
+                // Now open this submenu
+                const container = branchingSubmenu.closest('.nested-submenu-container');
+                if (container) {
+                    container.classList.add('horizontal-layout');
+                }
+                
+                branchingSubmenu.classList.add('show');
+                arrow.classList.add('rotated');
+                
+                // Cancel any auto-hide timer since we're manually opening a nested submenu
+                if (window.cancelSubmenuTimeout) {
+                    window.cancelSubmenuTimeout('lingo');
+                }
+                
+                console.log('🇮🇳 Tamil Lingo submenu opened - Horizontal layout activated');
+            }
+        }
+
+        // Tamil Section Selection Function
+        function selectTamilSection(sectionType) {
+            console.log(`🇮🇳 Navigating to Tamil ${sectionType} section`);
+            
+            // Close all submenus first
+            closeAllSubmenusGlobally();
+            
+            // Map section types to their corresponding HTML files
+            const sectionFiles = {
+                'alphabets': 'Guruvammal-Database/Languages/Tamil/GS_TA_Alphabets_Accents.html',
+                'numbers': 'Guruvammal-Database/Languages/Tamil/GS_TA_Numbers_1_to_100.html',
+                'greetings': 'Guruvammal-Database/Languages/Tamil/GS_TA_Beginner_Greetings.html',
+                'vocabulary': 'Guruvammal-Database/Languages/Tamil/GS_TA_Beg_Vocabulary.html'
+            };
+            
+            const htmlFile = sectionFiles[sectionType];
+            if (htmlFile) {
+                console.log(`🔄 Navigating to ${htmlFile}`);
+                window.location.href = htmlFile;
+            } else {
+                console.warn(`❌ Unknown Tamil section: ${sectionType}`);
+                alert(`Tamil ${sectionType} section will be available soon!`);
             }
         }
 
