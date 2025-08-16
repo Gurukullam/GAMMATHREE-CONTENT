@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Repository Sync Tool | GK Foundation</title>
+    <title>GitHub Repository Sync Tool | Ga Foundation - GAMMAFOUR</title>
     
     <style>
         * {
@@ -383,8 +383,8 @@
 </head>
 <body>
     <div class="header">
-        <h1>🔄 GitHub Repository Sync Tool</h1>
-        <p>Seamlessly sync your local development with GitHub repositories</p>
+        <h1>🔄 GitHub Repository Sync Tool - GAMMAFOUR</h1>
+        <p>Sync Ga Foundation Learning Platform with GitHub Repository: Gurukullam/GAMMAFOUR</p>
     </div>
     
     <div class="main-container">
@@ -401,7 +401,7 @@
             <div class="pane-content">
                 <div class="form-group">
                     <label for="localPath">📂 Project Root Path:</label>
-                    <input type="text" id="localPath" value="C:\Ga\GAMMA\GAMMATHREE" 
+                    <input type="text" id="localPath" value="C:\Ga\GAMMA\GAMMAFOUR" 
                            placeholder="Enter your local project path">
                 </div>
                 
@@ -484,12 +484,12 @@
                     
                     <div class="form-group">
                         <label for="githubUsername">👤 GitHub Username:</label>
-                        <input type="text" id="githubUsername" placeholder="your-username">
+                        <input type="text" id="githubUsername" value="Gurukullam" placeholder="your-username">
                     </div>
                     
                     <div class="form-group">
                         <label for="githubRepo">📦 Repository Name:</label>
-                        <input type="text" id="githubRepo" value="GAMMATHREE-CONTENT" 
+                        <input type="text" id="githubRepo" value="GAMMAFOUR" 
                                placeholder="repository-name">
                     </div>
                     
@@ -505,8 +505,8 @@
                     
                     <div class="form-group">
                         <label for="targetPath">🎯 Target Path in Repository:</label>
-                        <input type="text" id="targetPath" value="content/" 
-                               placeholder="content/ (leave empty for root)">
+                        <input type="text" id="targetPath" value="" 
+                               placeholder="(leave empty for root - recommended for GAMMAFOUR)">
                     </div>
                 </div>
                 
@@ -530,9 +530,24 @@
                     <h4>🗺️ Path Mapping Preview:</h4>
                     <div id="pathMappingPreview">
                         <div class="path-row">
-                            <span>📁 Local: /Guruvammal-Database/Languages/French/</span>
+                            <span>📁 Local: /index.html</span>
                             <span class="path-arrow">→</span>
-                            <span>📁 GitHub: /content/languages/french/</span>
+                            <span>📁 GitHub: /index.html</span>
+                        </div>
+                        <div class="path-row">
+                            <span>📁 Local: /IELTS/index.html</span>
+                            <span class="path-arrow">→</span>
+                            <span>📁 GitHub: /IELTS/index.html</span>
+                        </div>
+                        <div class="path-row">
+                            <span>📁 Local: /languages/french/</span>
+                            <span class="path-arrow">→</span>
+                            <span>📁 GitHub: /languages/french/</span>
+                        </div>
+                        <div class="path-row">
+                            <span>📁 Local: /languages/tamil/</span>
+                            <span class="path-arrow">→</span>
+                            <span>📁 GitHub: /languages/tamil/</span>
                         </div>
                     </div>
                 </div>
@@ -743,7 +758,7 @@
                         'Authorization': `Bearer ${this.token}`,
                         'Accept': 'application/vnd.github.v3+json',
                         'Content-Type': 'application/json',
-                        'User-Agent': 'GAMMATHREE-Sync-Tool'
+                        'User-Agent': 'GAMMAFOUR-Sync-Tool'
                     }
                 };
                 
@@ -1355,7 +1370,7 @@
                 folderInput.webkitdirectory = true; // This enables folder selection
                 folderInput.multiple = true;
                 
-                showStatus('📂 Select your project folder (GAMMATHREE) to upload everything...', 'info');
+                showStatus('📂 Select your project folder (GAMMAFOUR) to upload everything...', 'info');
                 
                 folderInput.onchange = async (event) => {
                     const files = event.target.files;
@@ -1667,7 +1682,7 @@
                 showStatus('🏗️ Creating repository...', 'info');
                 githubApi = new GitHubAPI(token, username, repo);
                 
-                const newRepo = await githubApi.createRepository('Content repository for GAMMATHREE project');
+                const newRepo = await githubApi.createRepository('Content repository for GAMMAFOUR project');
                 showStatus(`✅ Repository created: ${newRepo.html_url}`, 'success');
                 
                 // Load the new repository structure
@@ -1694,7 +1709,7 @@
             }
             
             // Files not loaded - need to load them first
-            showStatus(`📂 Select your project folder (${projectPath || 'GAMMATHREE'}) to upload all files...`, 'info');
+            showStatus(`📂 Select your project folder (${projectPath || 'GAMMAFOUR'}) to upload all files...`, 'info');
             
             // Create file input directly in the user click context
             const folderInput = document.createElement('input');
@@ -1912,12 +1927,12 @@
             
             // Convert loaded real files to upload format
             for (const [filePath, fileData] of loadedRealFiles) {
-                // Clean up the file path for GitHub (remove GAMMATHREE prefix if present)
+                // Clean up the file path for GitHub (remove GAMMAFOUR prefix if present)
                 let targetPath = filePath;
                 
                 // Remove the root folder name if it exists in the path
                 const pathParts = targetPath.split('/');
-                if (pathParts[0] === 'GAMMATHREE' || pathParts[0].includes('GAMMATHREE')) {
+                if (pathParts[0] === 'GAMMAFOUR' || pathParts[0].includes('GAMMAFOUR')) {
                     pathParts.shift(); // Remove first part
                     targetPath = pathParts.join('/');
                 }
@@ -1972,9 +1987,9 @@
                     return fileData.content;
                 }
                 
-                // Match if paths are similar (remove common prefixes like GAMMATHREE/)
-                const normalizedFilePath = filePath.replace(/^GAMMATHREE\//, '');
-                const normalizedLoadedPath = loadedPath.replace(/^GAMMATHREE\//, '');
+                // Match if paths are similar (remove common prefixes like GAMMAFOUR/)
+                const normalizedFilePath = filePath.replace(/^GAMMAFOUR\//, '');
+                const normalizedLoadedPath = loadedPath.replace(/^GAMMAFOUR\//, '');
                 
                 if (normalizedFilePath === normalizedLoadedPath) {
                     console.log(`✅ Found by normalized path match: ${loadedPath} for ${filePath}`);
